@@ -3,9 +3,7 @@
   --ink: #2e2928;
   --muted: #756d6a;
   --paper: #fff;
-  --surface: #fbfaf9;
   --line: #e8e1dd;
-  --shadow: rgba(42, 34, 31, 0.14);
   --placeholder-a: #d9c6bd;
   --placeholder-b: #8b6d62;
 }
@@ -35,9 +33,9 @@ body {
 }
 
 .section {
-  margin: 0 auto 28px;
-  background: var(--surface);
-  box-shadow: 0 5px 16px var(--shadow);
+  margin: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .photo-slot {
@@ -49,7 +47,7 @@ body {
 
 .cover {
   min-height: 100svh;
-  margin-bottom: 28px;
+  margin-bottom: 0;
   padding: 0;
   background: transparent;
   box-shadow: none;
@@ -107,10 +105,12 @@ body {
 
 .invitation {
   overflow: hidden;
+  padding-bottom: 34px;
 }
 
 .wide-photo {
-  height: 132px;
+  height: 148px;
+  margin-top: 0;
 }
 
 .letter {
@@ -131,7 +131,7 @@ body {
 }
 
 .profile {
-  padding: 64px 28px 52px;
+  padding: 72px 28px 64px;
 }
 
 .profile__grid {
@@ -192,7 +192,7 @@ body {
 
 .details,
 .parking {
-  padding: 58px 28px 46px;
+  padding: 72px 28px 56px;
   text-align: center;
 }
 
@@ -218,7 +218,7 @@ body {
 }
 
 .venue-card {
-  width: calc(100% - 10px);
+  width: 100%;
   min-height: 214px;
   margin: 0 auto 18px;
   overflow: hidden;
@@ -261,7 +261,7 @@ body {
 }
 
 .gallery {
-  padding: 48px 26px;
+  padding: 72px 26px 58px;
   text-align: center;
 }
 
@@ -280,7 +280,7 @@ body {
 }
 
 .ending {
-  padding: 22px 0 72px;
+  padding: 36px 0 84px;
   text-align: center;
   color: #6c6461;
   background: transparent;
