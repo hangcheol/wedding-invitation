@@ -20,7 +20,7 @@ html {
 
 body {
   margin: 0;
-  background: #f6f3f1;
+  background: #fff;
   color: var(--ink);
   font-family: "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
   line-height: 1.75;
@@ -30,7 +30,7 @@ body {
   width: min(100%, 390px);
   min-height: 100vh;
   margin: 0 auto;
-  padding: 16px 14px 40px;
+  padding: 0 0 40px;
   background: var(--paper);
 }
 
@@ -48,13 +48,16 @@ body {
 }
 
 .cover {
-  padding: 36px 26px 22px;
-  background: var(--paper);
+  min-height: 100svh;
+  margin-bottom: 28px;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .cover__photo {
   position: relative;
-  min-height: 492px;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -75,7 +78,7 @@ body {
 }
 
 .script-title {
-  margin: 16px 0 0;
+  margin: 24px 0 0;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 39px;
   line-height: 0.86;
@@ -373,14 +376,6 @@ body {
 }
 
 @media (max-width: 360px) {
-  .phone {
-    padding-inline: 10px;
-  }
-
-  .cover {
-    padding-inline: 22px;
-  }
-
   .script-title {
     font-size: 35px;
   }
