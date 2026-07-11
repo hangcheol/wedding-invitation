@@ -14,8 +14,10 @@
     "title": "저희 결혼합니다",
     "intro": "서로의 하루에 가장 다정한 사람이 되어, 이제 같은 계절을 걸어가려 합니다.",
     "closing": "소중한 걸음으로 축복해 주시면 큰 기쁨으로 간직하겠습니다.",
-    "coverCaption": "우리 이름 적힌 이 길 위로",
     "coverQuote": "Forever begins with a single step,\nand love guides us every step of the way."
+  },
+  "parking": {
+    "text": "예식장 주차장 이용이 가능합니다. 자세한 안내는 추후 업데이트됩니다."
   },
   "profile": {
     "groomStory": "부산에서 태어났어요. 진심을 오래 지키는 든든한 사람입니다.",
@@ -25,6 +27,11 @@
   },
   "media": {
     "heroPhoto": "",
+    "invitationPhoto": "",
+    "groomPhoto": "",
+    "bridePhoto": "",
+    "venuePhoto": "",
+    "parkingPhoto": "",
     "gallery": [],
     "bgm": ""
   },

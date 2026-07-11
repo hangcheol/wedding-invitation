@@ -2,22 +2,23 @@ async function loadInvitation() {
   const response = await fetch("data/config.json", { cache: "no-store" });
   const config = await response.json();
 
+  const galleryPhotos = Array.isArray(config.media.gallery) ? config.media.gallery : [];
+  const heroPhoto = config.media.heroPhoto || "";
+  const invitationPhoto = config.media.invitationPhoto || galleryPhotos[0] || heroPhoto;
+  const groomPhoto = config.media.groomPhoto || galleryPhotos[1] || heroPhoto;
+  const bridePhoto = config.media.bridePhoto || galleryPhotos[2] || heroPhoto;
+  const venuePhoto = config.media.venuePhoto || galleryPhotos[3] || invitationPhoto;
+  const parkingPhoto = config.media.parkingPhoto || galleryPhotos[4] || venuePhoto;
+
   const setText = (id, value) => {
     const element = document.getElementById(id);
     if (element && value) element.textContent = value;
   };
 
-  const heroPhoto = config.media.heroPhoto || "";
-  const galleryPhotos = Array.isArray(config.media.gallery) ? config.media.gallery : [];
-  const groomPhoto = config.media.groomPhoto || galleryPhotos[0] || heroPhoto;
-  const bridePhoto = config.media.bridePhoto || galleryPhotos[1] || heroPhoto;
-  const secondPhoto = galleryPhotos[2] || galleryPhotos[0] || heroPhoto;
-  const venuePhoto = config.media.venuePhoto || galleryPhotos[3] || secondPhoto;
-
-  const setBackground = (id, src, overlay = true) => {
+  const setBackground = (id, src, overlay = false) => {
     const element = document.getElementById(id);
     if (!element || !src) return;
-    const gradient = overlay ? "linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.34)), " : "";
+    const gradient = overlay ? "linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.32)), " : "";
     element.style.backgroundImage = `${gradient}url("${src}")`;
   };
 
@@ -33,53 +34,64 @@ async function loadInvitation() {
   setText("time", config.event.time);
   setText("venue", config.event.venue);
   setText("address", config.event.address);
-  setText("coverCaption", config.message.coverCaption || "우리 이름 적힌 이 길 위로");
   setText("coverDate", config.event.coverDate || config.event.displayDate);
   setText("coverQuote", config.message.coverQuote || "Forever begins with a single step,\nand love guides us every step of the way.");
   setText("groomStory", config.profile?.groomStory);
   setText("brideStory", config.profile?.brideStory);
   setText("groomTag", config.profile?.groomTag);
   setText("brideTag", config.profile?.brideTag);
+  setText("parkingText", config.parking?.text);
 
   setBackground("heroImage", heroPhoto, false);
-  setBackground("stripImage", heroPhoto);
-  setBackground("secondImage", secondPhoto);
+  setBackground("invitationImage", invitationPhoto, true);
   setBackground("groomPhoto", groomPhoto, false);
   setBackground("bridePhoto", bridePhoto, false);
   setBackground("venueImage", venuePhoto, false);
+  setBackground("parkingImage", parkingPhoto, false);
   renderCalendar(config.event.date);
+  renderGallery(galleryPhotos);
+  setupBgm(config.media.bgm);
+  setupActions(config);
+  setupReveal();
+}
 
+function renderGallery(galleryPhotos) {
   const gallery = document.getElementById("gallery");
   const gallerySection = document.getElementById("gallerySection");
-  if (galleryPhotos.length > 0) {
-    gallerySection.hidden = false;
-    gallery.replaceChildren(
-      ...galleryPhotos.map((src, index) => {
-        const image = document.createElement("img");
-        image.src = src;
-        image.alt = `웨딩 사진 ${index + 1}`;
-        image.loading = "lazy";
-        return image;
-      })
-    );
-  }
+  if (!gallery || !gallerySection || galleryPhotos.length === 0) return;
 
+  gallerySection.hidden = false;
+  gallery.replaceChildren(
+    ...galleryPhotos.map((src, index) => {
+      const image = document.createElement("img");
+      image.className = "slide-item";
+      image.src = src;
+      image.alt = `웨딩 사진 ${index + 1}`;
+      image.loading = "lazy";
+      return image;
+    })
+  );
+}
+
+function setupBgm(src) {
   const bgm = document.getElementById("bgm");
   const musicButton = document.getElementById("musicButton");
-  if (config.media.bgm) {
-    bgm.src = config.media.bgm;
-    musicButton.hidden = false;
-    musicButton.addEventListener("click", async () => {
-      if (bgm.paused) {
-        await bgm.play();
-        musicButton.classList.add("is-playing");
-      } else {
-        bgm.pause();
-        musicButton.classList.remove("is-playing");
-      }
-    });
-  }
+  if (!src || !bgm || !musicButton) return;
 
+  bgm.src = src;
+  musicButton.hidden = false;
+  musicButton.addEventListener("click", async () => {
+    if (bgm.paused) {
+      await bgm.play();
+      musicButton.classList.add("is-playing");
+    } else {
+      bgm.pause();
+      musicButton.classList.remove("is-playing");
+    }
+  });
+}
+
+function setupActions(config) {
   document.getElementById("topButton").addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
@@ -97,14 +109,16 @@ async function loadInvitation() {
       alert("청첩장 주소를 복사했습니다.");
     }
   });
+}
 
+function setupReveal() {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add("is-visible");
+        entry.target.classList.toggle("is-visible", entry.isIntersecting);
       });
     },
-    { threshold: 0.12 }
+    { rootMargin: "-8% 0px -18% 0px", threshold: 0.18 }
   );
 
   document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
