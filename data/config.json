@@ -1,0 +1,27 @@
+{
+  "couple": {
+    "groom": "함께할 사람",
+    "bride": "곁에 있을 사람"
+  },
+  "event": {
+    "date": "2026-11-01T12:00:00+09:00",
+    "displayDate": "2026년 11월 어느 좋은 날",
+    "time": "낮 12시",
+    "venue": "예식장 이름",
+    "address": "예식장 주소"
+  },
+  "message": {
+    "title": "저희 결혼합니다",
+    "intro": "서로의 하루에 가장 다정한 사람이 되어, 이제 같은 계절을 걸어가려 합니다.",
+    "closing": "소중한 걸음으로 축복해 주시면 큰 기쁨으로 간직하겠습니다."
+  },
+  "media": {
+    "heroPhoto": "assets/photos/hero.jpg",
+    "gallery": [],
+    "bgm": ""
+  },
+  "contact": {
+    "groomPhone": "",
+    "bridePhone": ""
+  }
+}
