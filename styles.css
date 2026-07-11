@@ -1,127 +1,307 @@
 :root {
   color-scheme: light;
-  --ink: #2f2a28;
-  --muted: #7a6f69;
-  --line: #e8dfd8;
-  --paper: #fffaf5;
-  --accent: #9c5f4d;
-  --soft: #f3e6dc;
+  --ink: #2e2727;
+  --muted: #786b6f;
+  --paper: #fbf7fb;
+  --blush: #f7e6ee;
+  --line: #eadfe5;
+  --shadow: rgba(74, 52, 58, 0.18);
+  --overlay: rgba(33, 26, 25, 0.42);
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
-  background: var(--paper);
+  background: #11151b;
   color: var(--ink);
   font-family: "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
-.page {
-  max-width: 520px;
+.phone {
+  width: min(100%, 390px);
   min-height: 100vh;
   margin: 0 auto;
-  background: #fffdf9;
-  box-shadow: 0 0 40px rgba(74, 47, 35, 0.08);
+  padding: 18px 18px 40px;
+  background: var(--blush);
 }
 
-.hero {
+.paper {
+  margin: 0 auto 28px;
+  background: var(--paper);
+  box-shadow: 0 4px 14px var(--shadow);
+}
+
+.cover {
+  padding: 42px 26px;
+}
+
+.cover__photo {
   position: relative;
-  min-height: 72vh;
+  min-height: 492px;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: space-between;
   overflow: hidden;
-  background: var(--soft);
+  background:
+    linear-gradient(135deg, #b99a8c, #ead8cf 48%, #6c5148),
+    url("assets/photos/hero.jpg");
+  background-position: center;
+  background-size: cover;
+  color: #fff;
 }
 
-.hero__image {
+.cover__shade {
   position: absolute;
   inset: 0;
+  background: linear-gradient(180deg, rgba(25, 18, 17, 0.08), rgba(25, 18, 17, 0.1) 42%, rgba(25, 18, 17, 0.58));
+}
+
+.cover__headline,
+.cover__caption {
+  position: relative;
+  z-index: 1;
+}
+
+.script-title {
+  margin: 14px 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 39px;
+  line-height: 0.86;
+  text-align: center;
+  letter-spacing: 0;
+  text-transform: lowercase;
+}
+
+.cover__caption {
+  padding: 0 20px 24px;
+  text-align: center;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.36);
+}
+
+.pill {
+  display: inline-block;
+  margin: 0 0 18px;
+  padding: 5px 12px 6px;
+  border-radius: 6px;
+  background: rgba(45, 39, 39, 0.7);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.date,
+.quote {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.quote {
+  margin-top: 9px;
+}
+
+.invitation {
+  overflow: hidden;
+}
+
+.photo-strip {
+  height: 118px;
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.46)),
-    linear-gradient(135deg, #ead7cb, #f8efe8);
+    linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.34)),
+    linear-gradient(135deg, #d3b9ac, #7c5f55),
+    url("assets/photos/hero.jpg");
+  background-position: center 58%;
+  background-size: cover;
+}
+
+.letter {
+  padding: 46px 34px 42px;
+  text-align: center;
+  font-size: 14px;
+  word-break: keep-all;
+}
+
+.couple-line {
+  margin: 0 0 24px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.letter p {
+  margin-top: 0;
+}
+
+.framed-photo,
+.venue-card {
+  position: relative;
+  width: calc(100% - 58px);
+  min-height: 188px;
+  margin: 0 auto 28px;
+  overflow: hidden;
+  border-radius: 6px;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.28)),
+    linear-gradient(135deg, #d8c0b8, #927066),
+    url("assets/photos/hero.jpg");
   background-position: center;
   background-size: cover;
 }
 
-.hero__content {
-  position: relative;
-  width: 100%;
-  padding: 48px 28px;
-  color: #fff;
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.32);
+.framed-photo {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 18px;
 }
 
-.eyebrow {
-  margin: 0 0 12px;
+.profile {
+  padding: 66px 28px 52px;
+}
+
+.profile__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.profile article {
+  text-align: center;
+}
+
+.profile__photo {
+  aspect-ratio: 1;
+  margin-bottom: 14px;
+  border-radius: 2px;
+  background:
+    linear-gradient(135deg, #c8afa5, #7d625b),
+    url("assets/photos/hero.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
+.role {
+  margin: 0 0 16px;
   font-size: 12px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  color: var(--muted);
 }
 
-h1 {
-  margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 44px;
-  font-weight: 500;
-  line-height: 1.15;
-}
-
-.names {
-  margin: 18px 0 0;
-  font-size: 18px;
+.role span {
+  color: var(--ink);
   font-weight: 600;
 }
 
-.section {
-  padding: 52px 28px;
-  border-bottom: 1px solid var(--line);
+.profile-text {
+  min-height: 84px;
+  margin: 0;
+  padding: 0 6px;
+  font-size: 12px;
+  color: #53484b;
+  word-break: keep-all;
 }
 
-.intro,
-.closing {
+.tag {
+  margin: 18px 0 0;
+  font-size: 12px;
+  color: var(--ink);
+}
+
+.contact-button {
+  display: block;
+  width: 150px;
+  margin: 34px auto 0;
+  padding: 8px 12px;
+  border: 1px solid #d8cdd3;
+  border-radius: 4px;
+  color: #6d5f63;
   text-align: center;
-  font-size: 18px;
-  word-break: keep-all;
+  text-decoration: none;
+  font-size: 12px;
+  box-shadow: 0 2px 7px rgba(75, 61, 66, 0.12);
 }
 
-.section h2 {
-  margin: 0 0 24px;
+.details {
+  padding: 58px 28px 46px;
+  text-align: center;
+}
+
+.section-title {
+  margin: 0 0 16px;
+  font-size: 16px;
+  letter-spacing: 0.03em;
+}
+
+.detail-main {
+  margin: 0;
+  font-size: 14px;
+}
+
+.detail-sub,
+.address {
+  margin: 6px 0 22px;
+  color: #4e4245;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.venue-card {
+  min-height: 214px;
+  margin-bottom: 18px;
+}
+
+.calendar {
+  width: min(240px, 100%);
+  margin: 10px auto 22px;
+  color: #5a4e52;
+}
+
+.calendar__month {
+  margin: 0 0 10px;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 24px;
-  font-weight: 500;
+  font-size: 15px;
 }
 
-dl {
+.calendar__grid {
   display: grid;
-  gap: 18px;
-  margin: 0;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  font-size: 11px;
 }
 
-dl div {
+.calendar__grid span {
+  min-height: 25px;
   display: grid;
-  grid-template-columns: 72px 1fr;
-  gap: 16px;
+  place-items: center;
 }
 
-dt {
-  color: var(--accent);
-  font-weight: 700;
+.calendar__grid .is-day {
+  color: #8a7d81;
 }
 
-dd {
-  margin: 0;
-  color: var(--muted);
-  word-break: keep-all;
+.calendar__grid .is-event {
+  border-radius: 50%;
+  background: #8a6f62;
+  color: #fff;
+}
+
+.gallery {
+  padding: 48px 26px;
+  text-align: center;
 }
 
 .gallery__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 9px;
 }
 
 .gallery__grid img {
@@ -129,27 +309,82 @@ dd {
   aspect-ratio: 1;
   object-fit: cover;
   display: block;
+  border-radius: 4px;
+}
+
+.ending {
+  padding: 22px 0 72px;
+  text-align: center;
+  color: #6c5e62;
+}
+
+.script-small {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.float-actions {
+  position: fixed;
+  right: max(12px, calc((100vw - 390px) / 2 + 12px));
+  bottom: 58px;
+  display: grid;
+  gap: 10px;
+  z-index: 10;
+}
+
+.float-actions button,
+.music {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(120, 112, 116, 0.36);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  box-shadow: 0 3px 9px rgba(45, 40, 42, 0.16);
 }
 
 .music {
   position: fixed;
-  right: max(16px, calc((100vw - 520px) / 2 + 16px));
-  bottom: 16px;
-  border: 0;
-  border-radius: 999px;
-  padding: 12px 16px;
-  background: var(--ink);
-  color: #fff;
-  font-weight: 700;
-  box-shadow: 0 10px 24px rgba(47, 42, 40, 0.22);
+  right: max(12px, calc((100vw - 390px) / 2 + 12px));
+  bottom: 14px;
+  z-index: 10;
 }
 
-@media (max-width: 420px) {
-  h1 {
-    font-size: 38px;
+.music.is-playing {
+  background: rgba(45, 39, 39, 0.78);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 360px) {
+  .phone {
+    padding-inline: 14px;
   }
 
-  .section {
-    padding: 44px 22px;
+  .cover {
+    padding-inline: 22px;
+  }
+
+  .script-title {
+    font-size: 35px;
+  }
+
+  .letter,
+  .profile,
+  .details {
+    padding-inline: 24px;
   }
 }
