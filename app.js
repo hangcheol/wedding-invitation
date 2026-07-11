@@ -7,7 +7,7 @@ async function loadInvitation() {
     if (element && value) element.textContent = value;
   };
 
-  const heroPhoto = config.media.heroPhoto || "assets/photos/hero.jpg";
+  const heroPhoto = config.media.heroPhoto || "";
   const galleryPhotos = Array.isArray(config.media.gallery) ? config.media.gallery : [];
   const groomPhoto = config.media.groomPhoto || galleryPhotos[0] || heroPhoto;
   const bridePhoto = config.media.bridePhoto || galleryPhotos[1] || heroPhoto;
