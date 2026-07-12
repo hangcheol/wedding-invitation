@@ -44,7 +44,7 @@
     "invitation": true,
     "profile": false,
     "details": true,
-    "parking": true,
+    "parking": false,
     "gallery": false,
     "bgm": true
   }
