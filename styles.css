@@ -104,20 +104,33 @@ body {
 }
 
 .invitation {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   overflow: hidden;
-  padding-bottom: 34px;
+  padding: 76px 0 48px;
 }
 
 .wide-photo {
-  height: 148px;
-  margin-top: 0;
+  height: 224px;
+  margin: 0 auto;
 }
 
 .letter {
-  padding: 46px 34px 48px;
+  padding: 0 34px;
   text-align: center;
   font-size: 14px;
   word-break: keep-all;
+}
+
+.invitation__letter {
+  width: 100%;
+}
+
+.invitation__photo {
+  width: calc(100% - 56px);
+  border-radius: 3px;
 }
 
 .couple-line {
