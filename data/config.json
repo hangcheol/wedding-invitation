@@ -1,14 +1,14 @@
 {
   "couple": {
-    "groom": "함께할 사람",
-    "bride": "곁에 있을 사람"
+    "groom": "조항철",
+    "bride": "남명은"
   },
   "event": {
     "date": "2026-11-01T12:00:00+09:00",
-    "displayDate": "2026년 11월 어느 좋은 날",
-    "time": "낮 12시",
-    "venue": "예식장 이름",
-    "address": "예식장 주소"
+    "displayDate": "2026년 11월 8일",
+    "time": "오후 1시",
+    "venue": "WI 컨벤션 W홀",
+    "address": "경기도 수원시 팔달구 월드컵로 310 월드컵경기장"
   },
   "message": {
     "title": "저희 결혼합니다",

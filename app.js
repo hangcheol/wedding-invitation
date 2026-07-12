@@ -1,6 +1,8 @@
 async function loadInvitation() {
   const response = await fetch("data/config.json", { cache: "no-store" });
   const config = await response.json();
+  const sections = config.sections || {};
+  const isEnabled = (name) => sections[name] !== false;
 
   const galleryPhotos = Array.isArray(config.media.gallery) ? config.media.gallery : [];
   const heroPhoto = config.media.heroPhoto || "";
@@ -48,17 +50,27 @@ async function loadInvitation() {
   setBackground("bridePhoto", bridePhoto, false);
   setBackground("venueImage", venuePhoto, false);
   setBackground("parkingImage", parkingPhoto, false);
+  setSectionVisibility("coverSection", isEnabled("cover"));
+  setSectionVisibility("invitationSection", isEnabled("invitation"));
+  setSectionVisibility("profileSection", isEnabled("profile"));
+  setSectionVisibility("details", isEnabled("details"));
+  setSectionVisibility("parkingSection", isEnabled("parking"));
   renderCalendar(config.event.date);
-  renderGallery(galleryPhotos);
-  setupBgm(config.media.bgm);
+  renderGallery(galleryPhotos, isEnabled("gallery"));
+  setupBgm(isEnabled("bgm") ? config.media.bgm : "");
   setupActions(config);
   setupReveal();
 }
 
-function renderGallery(galleryPhotos) {
+function setSectionVisibility(id, visible) {
+  const section = document.getElementById(id);
+  if (section) section.hidden = !visible;
+}
+
+function renderGallery(galleryPhotos, enabled) {
   const gallery = document.getElementById("gallery");
   const gallerySection = document.getElementById("gallerySection");
-  if (!gallery || !gallerySection || galleryPhotos.length === 0) return;
+  if (!gallery || !gallerySection || !enabled || galleryPhotos.length === 0) return;
 
   gallerySection.hidden = false;
   gallery.replaceChildren(
