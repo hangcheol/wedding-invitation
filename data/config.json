@@ -38,5 +38,14 @@
   "contact": {
     "groomPhone": "",
     "bridePhone": ""
+  },
+  "sections": {
+    "cover": true,
+    "invitation": true,
+    "profile": false,
+    "details": true,
+    "parking": true,
+    "gallery": false,
+    "bgm": true
   }
 }
