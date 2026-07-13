@@ -153,6 +153,8 @@ function setupActions(config) {
 }
 
 function setupReveal() {
+  if (!("IntersectionObserver" in window)) return;
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -162,7 +164,9 @@ function setupReveal() {
     { rootMargin: "-8% 0px -18% 0px", threshold: 0.18 }
   );
 
-  document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+  const elements = document.querySelectorAll(".reveal");
+  document.documentElement.classList.add("has-reveal");
+  elements.forEach((element) => observer.observe(element));
 }
 
 function renderCalendar(dateValue) {

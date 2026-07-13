@@ -427,24 +427,24 @@ body {
   background: rgba(45, 39, 39, 0.78);
 }
 
-.reveal {
+.has-reveal .reveal {
   opacity: 0;
   transform: translateY(36px);
   transition: opacity 760ms ease, transform 760ms cubic-bezier(0.18, 0.72, 0.24, 1);
 }
 
-.reveal.is-visible {
+.has-reveal .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.slide-item {
+.has-reveal .slide-item {
   opacity: 0;
   transform: translateY(18px);
   transition: opacity 620ms ease, transform 620ms cubic-bezier(0.18, 0.72, 0.24, 1);
 }
 
-.reveal.is-visible .slide-item {
+.has-reveal .reveal.is-visible .slide-item {
   opacity: 1;
   transform: translateY(0);
 }
@@ -467,8 +467,8 @@ body {
     scroll-behavior: auto;
   }
 
-  .reveal,
-  .slide-item {
+  .has-reveal .reveal,
+  .has-reveal .slide-item {
     opacity: 1;
     transform: none;
     transition: none;
