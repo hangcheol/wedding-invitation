@@ -62,6 +62,23 @@
         <p class="address slide-item" id="address">예식장 주소</p>
       </section>
 
+      <section class="section directions reveal" id="directionsSection">
+        <p class="section-title slide-item">오시는 길</p>
+        <div class="directions__place slide-item">
+          <span class="directions__mark" aria-hidden="true">●</span>
+          <div>
+            <p class="directions__venue" id="directionsVenue">예식장 이름</p>
+            <p class="directions__address" id="directionsAddress">예식장 주소</p>
+          </div>
+        </div>
+        <p class="directions__note slide-item" id="directionsNote"></p>
+        <div class="directions__actions slide-item">
+          <a id="kakaoMapLink" class="route-button" target="_blank" rel="noreferrer">카카오맵</a>
+          <a id="naverMapLink" class="route-button" target="_blank" rel="noreferrer" hidden>네이버지도</a>
+          <button id="copyAddressButton" class="route-button route-button--quiet" type="button">주소 복사</button>
+        </div>
+      </section>
+
       <section class="section parking reveal" id="parkingSection">
         <p class="section-title slide-item">주차 안내</p>
         <div class="venue-card photo-slot slide-item" id="parkingImage" aria-label="주차 안내 사진"></div>

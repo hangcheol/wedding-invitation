@@ -54,12 +54,41 @@ async function loadInvitation() {
   setSectionVisibility("invitationSection", isEnabled("invitation"));
   setSectionVisibility("profileSection", isEnabled("profile"));
   setSectionVisibility("details", isEnabled("details"));
+  setSectionVisibility("directionsSection", isEnabled("directions"));
   setSectionVisibility("parkingSection", isEnabled("parking"));
   renderCalendar(config.event.date);
   renderGallery(galleryPhotos, isEnabled("gallery"));
   setupBgm(isEnabled("bgm") ? config.media.bgm : "");
   setupActions(config);
+  setupDirections(config);
   setupReveal();
+}
+
+function setupDirections(config) {
+  const directions = config.directions || {};
+  const query = directions.query || [config.event.venue, config.event.address].filter(Boolean).join(" ");
+  const address = config.event.address || "";
+  const kakaoLink = document.getElementById("kakaoMapLink");
+  const naverLink = document.getElementById("naverMapLink");
+
+  setText("directionsVenue", config.event.venue);
+  setText("directionsAddress", address);
+  setText("directionsNote", directions.note);
+
+  if (kakaoLink) kakaoLink.href = `https://map.kakao.com/link/search/${encodeURIComponent(query)}`;
+  if (naverLink && directions.naverUrl) {
+    naverLink.href = directions.naverUrl;
+    naverLink.hidden = false;
+  }
+
+  document.getElementById("copyAddressButton")?.addEventListener("click", async () => {
+    await navigator.clipboard.writeText(address);
+    const button = document.getElementById("copyAddressButton");
+    if (!button) return;
+    const original = button.textContent;
+    button.textContent = "복사됨";
+    window.setTimeout(() => { button.textContent = original; }, 1600);
+  });
 }
 
 function setSectionVisibility(id, visible) {

@@ -38,6 +38,10 @@ body {
   box-shadow: none;
 }
 
+.section:not(.cover) {
+  position: relative;
+}
+
 .photo-slot {
   background:
     linear-gradient(135deg, var(--placeholder-a), var(--placeholder-b));
@@ -204,10 +208,93 @@ body {
 }
 
 .details,
-.parking {
+.parking,
+.directions {
   padding: 72px 28px 56px;
   text-align: center;
 }
+
+.directions {
+  padding-top: 42px;
+  padding-bottom: 64px;
+  background: #f8f7f5;
+}
+
+.directions__place {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 292px;
+  margin: 24px auto 0;
+  padding: 18px 0;
+  border-top: 1px solid #ded9d5;
+  border-bottom: 1px solid #ded9d5;
+  text-align: left;
+}
+
+.directions__mark {
+  padding-top: 2px;
+  color: #9c6f5e;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.directions__venue,
+.directions__address,
+.directions__note {
+  margin: 0;
+}
+
+.directions__venue {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.directions__address,
+.directions__note {
+  margin-top: 3px;
+  color: #615956;
+  font-size: 12px;
+  line-height: 1.65;
+  word-break: keep-all;
+}
+
+.directions__note {
+  min-height: 0;
+  max-width: 292px;
+  margin: 16px auto 0;
+}
+
+.directions__note:empty { display: none; }
+
+.directions__actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  max-width: 292px;
+  margin: 22px auto 0;
+}
+
+.route-button {
+  display: grid;
+  place-items: center;
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid #4f4642;
+  border-radius: 3px;
+  background: #4f4642;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.route-button--quiet {
+  background: transparent;
+  color: #4f4642;
+}
+
+.route-button[hidden] { display: none; }
 
 .section-title {
   margin: 0 0 16px;
@@ -342,19 +429,19 @@ body {
 
 .reveal {
   opacity: 0;
-  transform: translateY(74px) scale(0.985);
-  transition: opacity 850ms ease, transform 850ms cubic-bezier(0.18, 0.72, 0.24, 1);
+  transform: translateY(36px);
+  transition: opacity 760ms ease, transform 760ms cubic-bezier(0.18, 0.72, 0.24, 1);
 }
 
 .reveal.is-visible {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translateY(0);
 }
 
 .slide-item {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 720ms ease, transform 720ms cubic-bezier(0.18, 0.72, 0.24, 1);
+  transform: translateY(18px);
+  transition: opacity 620ms ease, transform 620ms cubic-bezier(0.18, 0.72, 0.24, 1);
 }
 
 .reveal.is-visible .slide-item {
