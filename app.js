@@ -61,7 +61,6 @@ async function loadInvitation() {
   setupBgm(isEnabled("bgm") ? config.media.bgm : "");
   setupActions(config);
   setupDirections(config);
-  setupReveal();
 }
 
 function setupDirections(config) {
@@ -155,16 +154,18 @@ function setupActions(config) {
 function setupReveal() {
   if (!("IntersectionObserver" in window)) return;
 
+  const elements = document.querySelectorAll(".reveal");
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        entry.target.classList.toggle("is-visible", entry.isIntersecting);
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
       });
     },
     { rootMargin: "-8% 0px -18% 0px", threshold: 0.18 }
   );
 
-  const elements = document.querySelectorAll(".reveal");
   document.documentElement.classList.add("has-reveal");
   elements.forEach((element) => observer.observe(element));
 }
@@ -206,6 +207,8 @@ function renderCalendar(dateValue) {
 
   calendar.replaceChildren(monthLabel, grid);
 }
+
+setupReveal();
 
 loadInvitation().catch((error) => {
   console.error("Failed to load invitation config", error);
