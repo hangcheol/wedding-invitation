@@ -2,6 +2,19 @@
 
 Public GitHub Pages site for `https://wedding.hamyeon.com`.
 
+The paired private editor is `hangcheol/wedding-admin`. The detailed architecture and current operating notes are maintained in `wedding-admin/docs/current-status.md`.
+
+## Current Structure
+
+- `index.html`: invitation layout and Open Graph metadata
+- `styles.css`: mobile layout and reveal transitions
+- `app.js`: config loading, section visibility, calendar, maps, gallery, BGM, and sharing
+- `data/config.json`: invitation content and section flags
+- `assets/photos/`: uploaded photos
+- `assets/bgm/`: uploaded music
+
+Content is normally edited from the private admin. `저장 후 공개 배포` commits and pushes this repository, then GitHub Pages rebuilds the site.
+
 ## GitHub Pages
 
 1. Create a public repository, for example `hangcheol/wedding-invitation`.
@@ -22,4 +35,3 @@ Target: hangcheol.github.io
 Proxy status: DNS only
 TTL: Auto
 ```
-
