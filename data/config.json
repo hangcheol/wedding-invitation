@@ -46,7 +46,7 @@
     "bridePhone": ""
   },
   "design": {
-    "template": "editorial",
+    "template": "paper-story",
     "introAnimation": true
   },
   "sections": {
