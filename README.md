@@ -13,6 +13,15 @@ The paired private editor is `hangcheol/wedding-admin`. The detailed architectur
 - `assets/photos/`: uploaded photos
 - `assets/bgm/`: uploaded music
 
+Photos uploaded from the admin are resized to a maximum 1600px edge and saved as WebP. The hero image is preloaded, while below-the-fold photos are loaded shortly before they enter the viewport.
+
+## Design Templates
+
+- `editorial`: photo-led, calm editorial layout
+- `paper-story`: hand-drawn paper invitation with a short SVG intro and a different section order
+
+Both templates use the same `data/config.json` content. The published selection is stored in `design.template`; either template can be reviewed without changing the published selection using `?previewTemplate=editorial` or `?previewTemplate=paper-story`.
+
 Content is normally edited from the private admin. `저장 후 공개 배포` commits and pushes this repository, then GitHub Pages rebuilds the site.
 
 ## GitHub Pages

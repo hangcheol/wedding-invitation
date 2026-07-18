@@ -1,33 +1,69 @@
+function setText(id, value) {
+  const element = document.getElementById(id);
+  if (element && value) element.textContent = value;
+}
+
+const TEMPLATES = new Set(["editorial", "paper-story"]);
+
+function resolveTemplate(config) {
+  const preview = new URLSearchParams(window.location.search).get("previewTemplate");
+  if (TEMPLATES.has(preview)) return preview;
+  const selected = config.design?.template;
+  return TEMPLATES.has(selected) ? selected : "editorial";
+}
+
+function setPhotoBackground(id, src, { overlay = false, eager = false } = {}) {
+  const element = document.getElementById(id);
+  if (!element) return;
+  if (!src) {
+    element.classList.add("is-empty");
+    return;
+  }
+
+  const gradient = overlay ? "linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.28)), " : "";
+  const apply = () => {
+    element.style.backgroundImage = `${gradient}url("${src}")`;
+    element.classList.add("is-loaded");
+  };
+
+  if (eager || !("IntersectionObserver" in window)) {
+    apply();
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    if (!entries.some((entry) => entry.isIntersecting)) return;
+    apply();
+    observer.disconnect();
+  }, { rootMargin: "320px 0px" });
+  observer.observe(element);
+}
+
 async function loadInvitation() {
   const response = await fetch("data/config.json", { cache: "no-store" });
   const config = await response.json();
+  const template = resolveTemplate(config);
+  document.documentElement.dataset.template = template;
+  document.documentElement.classList.toggle("no-paper-intro", config.design?.introAnimation === false);
   const sections = config.sections || {};
   const isEnabled = (name) => sections[name] !== false;
 
   const galleryPhotos = Array.isArray(config.media.gallery) ? config.media.gallery : [];
   const heroPhoto = config.media.heroPhoto || "";
-  const invitationPhoto = config.media.invitationPhoto || galleryPhotos[0] || heroPhoto;
-  const groomPhoto = config.media.groomPhoto || galleryPhotos[1] || heroPhoto;
-  const bridePhoto = config.media.bridePhoto || galleryPhotos[2] || heroPhoto;
-  const venuePhoto = config.media.venuePhoto || galleryPhotos[3] || invitationPhoto;
-  const parkingPhoto = config.media.parkingPhoto || galleryPhotos[4] || venuePhoto;
-
-  const setText = (id, value) => {
-    const element = document.getElementById(id);
-    if (element && value) element.textContent = value;
-  };
-
-  const setBackground = (id, src, overlay = false) => {
-    const element = document.getElementById(id);
-    if (!element || !src) return;
-    const gradient = overlay ? "linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.32)), " : "";
-    element.style.backgroundImage = `${gradient}url("${src}")`;
-  };
+  const invitationPhoto = config.media.invitationPhoto || galleryPhotos[0] || "";
+  const groomPhoto = config.media.groomPhoto || galleryPhotos[1] || "";
+  const bridePhoto = config.media.bridePhoto || galleryPhotos[2] || "";
+  const venuePhoto = config.media.venuePhoto || galleryPhotos[3] || "";
+  const parkingPhoto = config.media.parkingPhoto || galleryPhotos[4] || "";
 
   setText("groom", config.couple.groom);
   setText("bride", config.couple.bride);
   setText("groomNameTop", config.couple.groom);
   setText("brideNameTop", config.couple.bride);
+  setText("groomCover", config.couple.groom);
+  setText("brideCover", config.couple.bride);
+  setText("paperGroom", config.couple.groom);
+  setText("paperBride", config.couple.bride);
   setText("groomEnd", config.couple.groom);
   setText("brideEnd", config.couple.bride);
   setText("intro", config.message.intro);
@@ -44,18 +80,20 @@ async function loadInvitation() {
   setText("brideTag", config.profile?.brideTag);
   setText("parkingText", config.parking?.text);
 
-  setBackground("heroImage", heroPhoto, false);
-  setBackground("invitationImage", invitationPhoto, true);
-  setBackground("groomPhoto", groomPhoto, false);
-  setBackground("bridePhoto", bridePhoto, false);
-  setBackground("venueImage", venuePhoto, false);
-  setBackground("parkingImage", parkingPhoto, false);
+  setPhotoBackground("heroImage", heroPhoto, { eager: template === "editorial" });
+  setPhotoBackground("paperHeroImage", heroPhoto, { eager: false });
+  setPhotoBackground("invitationImage", invitationPhoto, { overlay: true });
+  setPhotoBackground("groomPhoto", groomPhoto);
+  setPhotoBackground("bridePhoto", bridePhoto);
+  setPhotoBackground("venueImage", venuePhoto);
+  setPhotoBackground("parkingImage", parkingPhoto);
   setSectionVisibility("coverSection", isEnabled("cover"));
   setSectionVisibility("invitationSection", isEnabled("invitation"));
   setSectionVisibility("profileSection", isEnabled("profile"));
   setSectionVisibility("details", isEnabled("details"));
   setSectionVisibility("directionsSection", isEnabled("directions"));
   setSectionVisibility("parkingSection", isEnabled("parking"));
+  setSectionVisibility("paperPhotoSection", template === "paper-story" && Boolean(heroPhoto));
   renderCalendar(config.event.date);
   renderGallery(galleryPhotos, isEnabled("gallery"));
   setupBgm(isEnabled("bgm") ? config.media.bgm : "");
@@ -68,17 +106,18 @@ function setupDirections(config) {
   const query = directions.query || [config.event.venue, config.event.address].filter(Boolean).join(" ");
   const address = config.event.address || "";
   const kakaoLink = document.getElementById("kakaoMapLink");
-  const naverLink = document.getElementById("naverMapLink");
+  const naverSearchUrl = directions.naverUrl || `https://map.naver.com/p/search/${encodeURIComponent(query)}`;
 
   setText("directionsVenue", config.event.venue);
   setText("directionsAddress", address);
   setText("directionsNote", directions.note);
+  setText("naverMapVenue", config.event.venue);
+  setText("naverMapAddress", address);
 
   if (kakaoLink) kakaoLink.href = `https://map.kakao.com/link/search/${encodeURIComponent(query)}`;
-  if (naverLink && directions.naverUrl) {
-    naverLink.href = directions.naverUrl;
-    naverLink.hidden = false;
-  }
+  const naverOpenLink = document.getElementById("naverMapOpenLink");
+  if (naverOpenLink) naverOpenLink.href = naverSearchUrl;
+  setupNaverMap({ clientId: directions.naverClientId, address, fallbackUrl: naverSearchUrl });
 
   document.getElementById("copyAddressButton")?.addEventListener("click", async () => {
     await navigator.clipboard.writeText(address);
@@ -88,6 +127,85 @@ function setupDirections(config) {
     button.textContent = "복사됨";
     window.setTimeout(() => { button.textContent = original; }, 1600);
   });
+}
+
+function loadNaverMaps(clientId) {
+  if (window.naver?.maps?.Service) return Promise.resolve(window.naver.maps);
+  return new Promise((resolve, reject) => {
+    const existing = document.querySelector("script[data-naver-maps]");
+    if (existing) {
+      existing.addEventListener("load", () => resolve(window.naver?.maps), { once: true });
+      existing.addEventListener("error", reject, { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.dataset.naverMaps = "true";
+    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${encodeURIComponent(clientId)}&submodules=geocoder`;
+    script.async = true;
+    script.addEventListener("load", () => resolve(window.naver?.maps), { once: true });
+    script.addEventListener("error", reject, { once: true });
+    document.head.append(script);
+  });
+}
+
+function setupNaverMap({ clientId, address, fallbackUrl }) {
+  const card = document.getElementById("naverMapCard");
+  const canvas = document.getElementById("naverMap");
+  const notice = document.getElementById("naverMapNotice");
+  if (!card || !canvas) return;
+
+  if (!clientId) {
+    if (notice) notice.textContent = "지도를 누르면 네이버지도 길찾기로 연결됩니다.";
+    return;
+  }
+
+  const activate = async () => {
+    try {
+      const maps = await loadNaverMaps(clientId);
+      if (!maps?.Service) throw new Error("Naver Maps API is unavailable");
+      maps.Service.geocode({ query: address }, (status, response) => {
+        const result = response?.v2?.addresses?.[0];
+        if (status !== maps.Service.Status.OK || !result) {
+          if (notice) notice.textContent = "지도를 불러오지 못했습니다. 네이버지도 링크를 이용해 주세요.";
+          return;
+        }
+
+        const position = new maps.LatLng(Number(result.y), Number(result.x));
+        const map = new maps.Map(canvas, {
+          center: position,
+          zoom: 16,
+          minZoom: 10,
+          zoomControl: true,
+          zoomControlOptions: { position: maps.Position.TOP_RIGHT }
+        });
+        new maps.Marker({ map, position });
+        card.classList.add("is-live");
+        if (notice) {
+          const link = document.createElement("a");
+          link.href = fallbackUrl;
+          link.target = "_blank";
+          link.rel = "noreferrer";
+          link.textContent = "네이버지도에서 크게 보기 ↗";
+          notice.replaceChildren(link);
+        }
+      });
+    } catch (error) {
+      console.warn("Naver map load failed", error);
+      if (notice) notice.textContent = "지도를 불러오지 못했습니다. 네이버지도 링크를 이용해 주세요.";
+    }
+  };
+
+  if (!("IntersectionObserver" in window)) {
+    activate();
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    if (!entries.some((entry) => entry.isIntersecting)) return;
+    observer.disconnect();
+    activate();
+  }, { rootMargin: "360px 0px" });
+  observer.observe(card);
 }
 
 function setSectionVisibility(id, visible) {
@@ -108,6 +226,9 @@ function renderGallery(galleryPhotos, enabled) {
       image.src = src;
       image.alt = `웨딩 사진 ${index + 1}`;
       image.loading = "lazy";
+      image.decoding = "async";
+      image.width = 360;
+      image.height = 450;
       return image;
     })
   );
