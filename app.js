@@ -117,7 +117,12 @@ function setupDirections(config) {
   if (kakaoLink) kakaoLink.href = `https://map.kakao.com/link/search/${encodeURIComponent(query)}`;
   const naverOpenLink = document.getElementById("naverMapOpenLink");
   if (naverOpenLink) naverOpenLink.href = naverSearchUrl;
-  setupNaverMap({ clientId: directions.naverClientId, address, fallbackUrl: naverSearchUrl });
+  setupNaverMap({
+    clientId: directions.naverClientId,
+    latitude: Number(directions.latitude) || 37.2865317,
+    longitude: Number(directions.longitude) || 127.036915,
+    fallbackUrl: naverSearchUrl
+  });
 
   document.getElementById("copyAddressButton")?.addEventListener("click", async () => {
     await navigator.clipboard.writeText(address);
@@ -129,27 +134,26 @@ function setupDirections(config) {
   });
 }
 
-function loadNaverMaps(clientId) {
-  if (window.naver?.maps?.Service) return Promise.resolve(window.naver.maps);
+function waitForNaverMaps(timeoutMs = 8000) {
   return new Promise((resolve, reject) => {
-    const existing = document.querySelector("script[data-naver-maps]");
-    if (existing) {
-      existing.addEventListener("load", () => resolve(window.naver?.maps), { once: true });
-      existing.addEventListener("error", reject, { once: true });
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.dataset.naverMaps = "true";
-    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${encodeURIComponent(clientId)}&submodules=geocoder`;
-    script.async = true;
-    script.addEventListener("load", () => resolve(window.naver?.maps), { once: true });
-    script.addEventListener("error", reject, { once: true });
-    document.head.append(script);
+    const startedAt = Date.now();
+    const check = () => {
+      const maps = window.naver?.maps;
+      if (maps?.Map && maps?.Marker && maps.jsContentLoaded !== false) {
+        resolve(maps);
+        return;
+      }
+      if (Date.now() - startedAt >= timeoutMs) {
+        reject(new Error("Naver Maps API is unavailable"));
+        return;
+      }
+      window.setTimeout(check, 80);
+    };
+    check();
   });
 }
 
-function setupNaverMap({ clientId, address, fallbackUrl }) {
+function setupNaverMap({ clientId, latitude, longitude, fallbackUrl }) {
   const card = document.getElementById("naverMapCard");
   const canvas = document.getElementById("naverMap");
   const notice = document.getElementById("naverMapNotice");
@@ -162,34 +166,25 @@ function setupNaverMap({ clientId, address, fallbackUrl }) {
 
   const activate = async () => {
     try {
-      const maps = await loadNaverMaps(clientId);
-      if (!maps?.Service) throw new Error("Naver Maps API is unavailable");
-      maps.Service.geocode({ query: address }, (status, response) => {
-        const result = response?.v2?.addresses?.[0];
-        if (status !== maps.Service.Status.OK || !result) {
-          if (notice) notice.textContent = "지도를 불러오지 못했습니다. 네이버지도 링크를 이용해 주세요.";
-          return;
-        }
-
-        const position = new maps.LatLng(Number(result.y), Number(result.x));
-        const map = new maps.Map(canvas, {
-          center: position,
-          zoom: 16,
-          minZoom: 10,
-          zoomControl: true,
-          zoomControlOptions: { position: maps.Position.TOP_RIGHT }
-        });
-        new maps.Marker({ map, position });
-        card.classList.add("is-live");
-        if (notice) {
-          const link = document.createElement("a");
-          link.href = fallbackUrl;
-          link.target = "_blank";
-          link.rel = "noreferrer";
-          link.textContent = "네이버지도에서 크게 보기 ↗";
-          notice.replaceChildren(link);
-        }
+      const maps = await waitForNaverMaps();
+      const position = new maps.LatLng(latitude, longitude);
+      const map = new maps.Map(canvas, {
+        center: position,
+        zoom: 17,
+        minZoom: 10,
+        zoomControl: true,
+        zoomControlOptions: { position: maps.Position.TOP_RIGHT }
       });
+      new maps.Marker({ map, position });
+      card.classList.add("is-live");
+      if (notice) {
+        const link = document.createElement("a");
+        link.href = fallbackUrl;
+        link.target = "_blank";
+        link.rel = "noreferrer";
+        link.textContent = "네이버지도에서 크게 보기 ↗";
+        notice.replaceChildren(link);
+      }
     } catch (error) {
       console.warn("Naver map load failed", error);
       if (notice) notice.textContent = "지도를 불러오지 못했습니다. 네이버지도 링크를 이용해 주세요.";
