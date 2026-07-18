@@ -53,10 +53,10 @@
   "sections": {
     "cover": true,
     "invitation": true,
-    "profile": false,
+    "profile": true,
     "details": true,
     "directions": true,
-    "parking": false,
+    "parking": true,
     "gallery": true,
     "bgm": true
   }
