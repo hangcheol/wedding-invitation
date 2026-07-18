@@ -170,13 +170,9 @@ button { cursor: pointer; }
 .directions__note:empty { display: none; }
 .naver-map-card { width: min(330px, 100%); margin: 26px auto 4px; text-align: left; }
 .naver-map-card__canvas { position: relative; min-height: 258px; overflow: hidden; border: 1px solid #d7d0ca; background: #eef2ec; }
-.naver-map-card__fallback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 34px 24px 26px; background-color: #f3f5ef; background-image: linear-gradient(34deg, transparent 46%, rgba(140,154,138,.16) 47%, rgba(140,154,138,.16) 49%, transparent 50%), linear-gradient(142deg, transparent 39%, rgba(140,154,138,.12) 40%, rgba(140,154,138,.12) 42%, transparent 43%), linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px); background-size: 100% 100%, 100% 100%, 42px 42px, 42px 42px; text-align: center; }
-.naver-map-card__brand { position: absolute; top: 14px; left: 16px; color: #03a94d; font-size: 9px; font-weight: 800; letter-spacing: .12em; }
-.naver-map-card__pin { display: grid; width: 38px; height: 38px; place-items: center; margin-bottom: 12px; border-radius: 50% 50% 50% 8px; background: #03c75a; color: #fff; font-size: 13px; transform: rotate(-45deg); box-shadow: 0 6px 15px rgba(3,199,90,.22); }
-.naver-map-card__pin::first-letter { transform: rotate(45deg); }
-.naver-map-card__fallback strong { position: relative; color: #3d453f; font-size: 15px; }
-.naver-map-card__fallback > span:not(.naver-map-card__brand, .naver-map-card__pin) { position: relative; margin-top: 5px; color: #6e756f; font-size: 10px; line-height: 1.5; }
-.naver-map-card__fallback a { position: relative; margin-top: 19px; padding: 10px 17px; border-radius: 999px; background: #03c75a; color: #fff; font-size: 11px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 12px rgba(3,199,90,.16); }
+  .naver-map-card__fallback { position: absolute; inset: 0; background: #e8ece5; }
+  .naver-map-card__fallback iframe { display: block; width: 100%; height: 100%; border: 0; background: #e8ece5; }
+  .naver-map-card__fallback a { position: absolute; right: 12px; bottom: 12px; padding: 9px 13px; border-radius: 999px; background: #03c75a; color: #fff; font-size: 10px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
 .naver-map-card__notice { margin: 9px 0 0; color: #827a75; font-size: 10px; line-height: 1.55; text-align: center; word-break: keep-all; }
 .naver-map-card__notice a { color: inherit; text-underline-offset: 3px; }
 .naver-map-card.is-live .naver-map-card__fallback { display: none; }

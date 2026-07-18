@@ -111,14 +111,12 @@ function setupDirections(config) {
   setText("directionsVenue", config.event.venue);
   setText("directionsAddress", address);
   setText("directionsNote", directions.note);
-  setText("naverMapVenue", config.event.venue);
-  setText("naverMapAddress", address);
 
   if (kakaoLink) kakaoLink.href = `https://map.kakao.com/link/search/${encodeURIComponent(query)}`;
   const naverOpenLink = document.getElementById("naverMapOpenLink");
   if (naverOpenLink) naverOpenLink.href = naverSearchUrl;
   setupNaverMap({
-    clientId: directions.naverClientId,
+    enabled: document.getElementById("naverMapsApi")?.hasAttribute("src") === true,
     latitude: Number(directions.latitude) || 37.2865317,
     longitude: Number(directions.longitude) || 127.036915,
     fallbackUrl: naverSearchUrl
@@ -153,14 +151,32 @@ function waitForNaverMaps(timeoutMs = 8000) {
   });
 }
 
-function setupNaverMap({ clientId, latitude, longitude, fallbackUrl }) {
+function setupNaverMap({ enabled, latitude, longitude, fallbackUrl }) {
   const card = document.getElementById("naverMapCard");
   const canvas = document.getElementById("naverMap");
+  const fallbackFrame = document.getElementById("fallbackMapFrame");
   const notice = document.getElementById("naverMapNotice");
   if (!card || !canvas) return;
 
-  if (!clientId) {
-    if (notice) notice.textContent = "지도를 누르면 네이버지도 길찾기로 연결됩니다.";
+  if (fallbackFrame) {
+    const latitudeSpan = 0.0042;
+    const longitudeSpan = 0.0062;
+    const bbox = [
+      longitude - longitudeSpan,
+      latitude - latitudeSpan,
+      longitude + longitudeSpan,
+      latitude + latitudeSpan
+    ].join(",");
+    const params = new URLSearchParams({
+      bbox,
+      layer: "mapnik",
+      marker: `${latitude},${longitude}`
+    });
+    fallbackFrame.src = `https://www.openstreetmap.org/export/embed.html?${params}`;
+  }
+
+  if (!enabled) {
+    if (notice) notice.textContent = "지도에서 주변 위치를 확인하고 네이버지도로 크게 볼 수 있습니다.";
     return;
   }
 
@@ -187,7 +203,7 @@ function setupNaverMap({ clientId, latitude, longitude, fallbackUrl }) {
       }
     } catch (error) {
       console.warn("Naver map load failed", error);
-      if (notice) notice.textContent = "지도를 불러오지 못했습니다. 네이버지도 링크를 이용해 주세요.";
+      if (notice) notice.textContent = "지도에서 주변 위치를 확인하고 네이버지도로 크게 볼 수 있습니다.";
     }
   };
 

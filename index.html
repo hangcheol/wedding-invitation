@@ -116,13 +116,10 @@
         </div>
         <p class="directions__note slide-item" id="directionsNote"></p>
         <div class="naver-map-card slide-item" id="naverMapCard">
-          <div class="naver-map-card__canvas" id="naverMap" aria-label="WI컨벤션 네이버지도">
+          <div class="naver-map-card__canvas" id="naverMap" aria-label="WI컨벤션 위치 지도">
             <div class="naver-map-card__fallback" id="naverMapFallback">
-              <span class="naver-map-card__brand">NAVER MAP</span>
-              <span class="naver-map-card__pin" aria-hidden="true">●</span>
-              <strong id="naverMapVenue">WI 컨벤션 W홀</strong>
-              <span id="naverMapAddress">경기도 수원시 팔달구 월드컵로 310</span>
-              <a id="naverMapOpenLink" href="https://map.naver.com" target="_blank" rel="noreferrer">네이버지도에서 위치 보기 <span aria-hidden="true">↗</span></a>
+              <iframe id="fallbackMapFrame" title="WI컨벤션 주변 약도" loading="lazy" referrerpolicy="no-referrer"></iframe>
+              <a id="naverMapOpenLink" href="https://map.naver.com" target="_blank" rel="noreferrer">네이버지도에서 크게 보기 <span aria-hidden="true">↗</span></a>
             </div>
           </div>
           <p class="naver-map-card__notice" id="naverMapNotice">지도를 누르면 네이버지도 길찾기로 연결됩니다.</p>
@@ -202,6 +199,6 @@
       <audio id="bgm" loop preload="none"></audio>
     </main>
 
-    <script src="app.js?v=20260718-5"></script>
+    <script src="app.js?v=20260718-6"></script>
   </body>
 </html>
