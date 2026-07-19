@@ -6,7 +6,8 @@
   --soft: #f5f1ec;
   --accent: #9a715f;
   --line: #e7dfd8;
-  --serif: Georgia, "Times New Roman", serif;
+  --body-font: "Gowun Batang", "Apple SD Gothic Neo", serif;
+  --serif: var(--body-font);
 }
 
 * { box-sizing: border-box; }
@@ -20,13 +21,14 @@ body {
   margin: 0;
   background: #eee9e4;
   color: var(--ink);
-  font-family: "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  font-family: var(--body-font);
   font-weight: 400;
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
 }
 
 button, a { -webkit-tap-highlight-color: transparent; }
+button, input, textarea, select { font-family: inherit; }
 button { cursor: pointer; }
 [hidden] { display: none !important; }
 
@@ -356,7 +358,7 @@ button { cursor: pointer; }
   justify-items: start;
   width: 210px;
   margin: 0 auto 18px;
-  font-family: "Nanum Pen Script", "Apple SD Gothic Neo", sans-serif;
+  font-family: var(--body-font);
   font-size: 25px;
   line-height: 1.18;
   letter-spacing: -0.06em;
@@ -441,7 +443,7 @@ button { cursor: pointer; }
 [data-template="paper-story"] .invitation::after { margin: 38px auto 0; transform: rotate(5deg); }
 [data-template="paper-story"] .invitation__photo { display: none; }
 [data-template="paper-story"] .invitation .section-kicker { color: var(--paper-coral); }
-[data-template="paper-story"] .couple-line { font-family: "Apple SD Gothic Neo", sans-serif; font-size: 17px; }
+[data-template="paper-story"] .couple-line { font-family: var(--body-font); font-size: 17px; }
 
 [data-template="paper-story"] .paper-photo-story {
   position: relative;
