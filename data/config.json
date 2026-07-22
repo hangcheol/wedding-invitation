@@ -66,11 +66,11 @@
     "order": [
       "invitation",
       "photo",
+      "profile",
       "details",
       "directions",
-      "gallery",
-      "profile",
-      "parking"
+      "parking",
+      "gallery"
     ]
   }
 }
