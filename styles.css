@@ -44,6 +44,7 @@ button { cursor: pointer; }
 }
 
 .section { position: relative; margin: 0; }
+.multiline-copy { white-space: pre-line; }
 .photo-slot {
   background: linear-gradient(135deg, #e5d8cf, #b7a198);
   background-position: center;
@@ -129,6 +130,8 @@ button { cursor: pointer; }
 .profile__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .profile article { text-align: center; }
 .profile__photo { aspect-ratio: 4 / 5; margin-bottom: 16px; border-radius: 2px; }
+.profile-qualifier { color: #7a706b; font-size: .82em; }
+.profile__together { max-width: 310px; margin: 30px auto 0; padding: 0 20px; color: #5f5753; line-height: 1.9; text-align: center; }
 .role { margin: 0 0 14px; color: var(--muted); font-size: 12px; }
 .role span { color: var(--ink); font-weight: 600; }
 .profile-text { min-height: 84px; margin: 0; padding: 0 5px; color: #5b5350; font-size: 12px; word-break: keep-all; }
@@ -287,6 +290,15 @@ button { cursor: pointer; }
   mix-blend-mode: multiply;
   transform: translateY(-10px) scale(.98);
   animation: paper-title-appear 720ms ease 180ms forwards;
+}
+
+.paper-intro__names {
+  margin: -5px 0 3px;
+  color: var(--paper-ink);
+  font-size: 17px;
+  letter-spacing: .1em;
+  opacity: 0;
+  animation: paper-title-appear 720ms ease 720ms forwards;
 }
 
 .paper-intro__characters {
@@ -536,6 +548,7 @@ button { cursor: pointer; }
 .no-paper-intro .paper-card__event,
 .no-paper-intro .paper-cover__names,
 .no-paper-intro .paper-intro__title,
+.no-paper-intro .paper-intro__names,
 .no-paper-intro .paper-intro__characters,
 .no-paper-intro .paper-intro__character-half,
 .no-paper-intro .paper-cover__scroll {
@@ -559,6 +572,7 @@ button { cursor: pointer; }
   .paper-card__event,
   .paper-cover__names,
   .paper-intro__title,
+  .paper-intro__names,
   .paper-intro__characters,
   .paper-intro__character-half,
   .paper-cover__scroll,

@@ -3,6 +3,14 @@ function setText(id, value) {
   if (element && value) element.textContent = value;
 }
 
+function setOptionalText(id, value, { parentheses = false } = {}) {
+  const element = document.getElementById(id);
+  if (!element) return;
+  const text = String(value || "").trim();
+  element.textContent = text ? (parentheses ? `(${text.replace(/^\(|\)$/g, "")})` : text) : "";
+  element.hidden = !text;
+}
+
 const TEMPLATES = new Set(["editorial", "paper-story"]);
 
 function resolveTemplate(config) {
@@ -66,6 +74,7 @@ async function loadInvitation() {
   setText("paperBride", config.couple.bride);
   setText("groomEnd", config.couple.groom);
   setText("brideEnd", config.couple.bride);
+  setText("paperCoverNames", config.message.coverNames || `${config.couple.bride}과 ${config.couple.groom}`);
   setText("intro", config.message.intro);
   setText("closing", config.message.closing);
   setText("displayDate", config.event.displayDate);
@@ -78,6 +87,9 @@ async function loadInvitation() {
   setText("brideStory", config.profile?.brideStory);
   setText("groomTag", config.profile?.groomTag);
   setText("brideTag", config.profile?.brideTag);
+  setOptionalText("groomQualifier", config.profile?.groomQualifier, { parentheses: true });
+  setOptionalText("brideQualifier", config.profile?.brideQualifier, { parentheses: true });
+  setOptionalText("profileTogether", config.profile?.togetherMessage);
   setText("parkingText", config.parking?.text);
 
   setPhotoBackground("heroImage", heroPhoto, { eager: template === "editorial" });
@@ -94,11 +106,35 @@ async function loadInvitation() {
   setSectionVisibility("directionsSection", isEnabled("directions"));
   setSectionVisibility("parkingSection", isEnabled("parking"));
   setSectionVisibility("paperPhotoSection", template === "paper-story" && Boolean(heroPhoto));
+  applySectionOrder(config.sections?.order, template);
   renderCalendar(config.event.date);
   renderGallery(galleryPhotos, isEnabled("gallery"));
   setupBgm(isEnabled("bgm") ? config.media.bgm : "");
   setupActions(config);
   setupDirections(config);
+}
+
+const DEFAULT_SECTION_ORDER = ["invitation", "photo", "details", "directions", "gallery", "profile", "parking"];
+const SECTION_ELEMENT_IDS = {
+  invitation: "invitationSection",
+  photo: "paperPhotoSection",
+  profile: "profileSection",
+  details: "details",
+  directions: "directionsSection",
+  parking: "parkingSection",
+  gallery: "gallerySection"
+};
+
+function applySectionOrder(savedOrder, template) {
+  const valid = Array.isArray(savedOrder) ? savedOrder.filter((key) => DEFAULT_SECTION_ORDER.includes(key)) : [];
+  const order = [...new Set([...valid, ...DEFAULT_SECTION_ORDER])];
+  document.getElementById("coverSection")?.style.setProperty("order", "1");
+  order.forEach((key, index) => {
+    const element = document.getElementById(SECTION_ELEMENT_IDS[key]);
+    if (element) element.style.setProperty("order", String(index + 2), "important");
+  });
+  document.querySelector(".ending")?.style.setProperty("order", String(order.length + 2));
+  if (template !== "paper-story") document.getElementById("paperPhotoSection")?.style.removeProperty("order");
 }
 
 function setupDirections(config) {
