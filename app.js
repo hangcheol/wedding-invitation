@@ -58,11 +58,11 @@ async function loadInvitation() {
 
   const galleryPhotos = Array.isArray(config.media.gallery) ? config.media.gallery : [];
   const heroPhoto = config.media.heroPhoto || "";
-  const invitationPhoto = config.media.invitationPhoto || galleryPhotos[0] || "";
-  const groomPhoto = config.media.groomPhoto || galleryPhotos[1] || "";
-  const bridePhoto = config.media.bridePhoto || galleryPhotos[2] || "";
-  const venuePhoto = config.media.venuePhoto || galleryPhotos[3] || "";
-  const parkingPhoto = config.media.parkingPhoto || galleryPhotos[4] || "";
+  const invitationPhoto = config.media.invitationPhoto || "";
+  const groomPhoto = config.media.groomPhoto || "";
+  const bridePhoto = config.media.bridePhoto || "";
+  const venuePhoto = config.media.venuePhoto || "";
+  const parkingPhoto = config.media.parkingPhoto || "";
 
   setText("groom", config.couple.groom);
   setText("bride", config.couple.bride);
@@ -111,6 +111,7 @@ async function loadInvitation() {
   renderGallery(galleryPhotos, isEnabled("gallery"));
   setupBgm(isEnabled("bgm") ? config.media.bgm : "");
   setupActions(config);
+  setupContacts(config.contact || {});
   setupDirections(config);
 }
 
@@ -142,6 +143,7 @@ function setupDirections(config) {
   const query = directions.query || [config.event.venue, config.event.address].filter(Boolean).join(" ");
   const address = config.event.address || "";
   const kakaoLink = document.getElementById("kakaoMapLink");
+  const naverLink = document.getElementById("naverMapLink");
   const naverSearchUrl = directions.naverUrl || `https://map.naver.com/p/search/${encodeURIComponent(query)}`;
 
   setText("directionsVenue", config.event.venue);
@@ -149,6 +151,7 @@ function setupDirections(config) {
   setText("directionsNote", directions.note);
 
   if (kakaoLink) kakaoLink.href = `https://map.kakao.com/link/search/${encodeURIComponent(query)}`;
+  if (naverLink) naverLink.href = naverSearchUrl;
   const naverOpenLink = document.getElementById("naverMapOpenLink");
   if (naverOpenLink) naverOpenLink.href = naverSearchUrl;
   setupNaverMap({
@@ -166,6 +169,25 @@ function setupDirections(config) {
     button.textContent = "복사됨";
     window.setTimeout(() => { button.textContent = original; }, 1600);
   });
+}
+
+function setupContacts(contact) {
+  const actions = document.getElementById("contactActions");
+  if (!actions) return;
+
+  const contacts = [
+    ["groomContact", "신랑에게 연락", contact.groomPhone],
+    ["brideContact", "신부에게 연락", contact.bridePhone]
+  ].filter(([, , phone]) => String(phone || "").trim());
+
+  contacts.forEach(([id, label, phone]) => {
+    const link = document.getElementById(id);
+    if (!link) return;
+    link.href = `tel:${String(phone).replace(/[^+\d]/g, "")}`;
+    link.textContent = label;
+    link.hidden = false;
+  });
+  actions.hidden = contacts.length === 0;
 }
 
 function waitForNaverMaps(timeoutMs = 8000) {
@@ -279,6 +301,17 @@ function renderGallery(galleryPhotos, enabled) {
       return image;
     })
   );
+
+  const moreButton = document.getElementById("galleryMoreButton");
+  if (!moreButton || galleryPhotos.length <= 8) return;
+  gallery.classList.add("is-collapsed");
+  moreButton.hidden = false;
+  moreButton.textContent = `사진 더보기 (${galleryPhotos.length - 8})`;
+  moreButton.addEventListener("click", () => {
+    const collapsed = gallery.classList.toggle("is-collapsed");
+    moreButton.textContent = collapsed ? `사진 더보기 (${galleryPhotos.length - 8})` : "사진 접기";
+    moreButton.setAttribute("aria-expanded", String(!collapsed));
+  });
 }
 
 function setupBgm(src) {
@@ -300,9 +333,13 @@ function setupBgm(src) {
 }
 
 function setupActions(config) {
-  document.getElementById("topButton").addEventListener("click", () => {
+  const topButton = document.getElementById("topButton");
+  topButton.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
+  const updateTopButton = () => topButton.classList.toggle("is-visible", window.scrollY > 700);
+  window.addEventListener("scroll", updateTopButton, { passive: true });
+  updateTopButton();
 
   document.getElementById("shareButton").addEventListener("click", async () => {
     const shareData = {

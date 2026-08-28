@@ -27,7 +27,7 @@
       })();
     </script>
     <script id="naverMapsApi" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=WhA25IKaFafTRR4Z_WCj"></script>
-    <link rel="stylesheet" href="styles.css?v=20260719-1">
+    <link rel="stylesheet" href="styles.css?v=20260828-1">
   </head>
   <body>
     <main class="phone">
@@ -99,7 +99,10 @@
           </article>
         </div>
         <p class="profile__together multiline-copy slide-item" id="profileTogether" hidden></p>
-        <a class="contact-button slide-item" id="contactButton" href="#details">혼주에게 연락하기</a>
+        <div class="contact-actions slide-item" id="contactActions" hidden>
+          <a class="contact-button" id="groomContact" hidden></a>
+          <a class="contact-button" id="brideContact" hidden></a>
+        </div>
       </section>
 
       <section class="section details reveal" id="details">
@@ -127,12 +130,12 @@
           <div class="naver-map-card__canvas" id="naverMap" aria-label="WI컨벤션 위치 지도">
             <div class="naver-map-card__fallback" id="naverMapFallback">
               <iframe id="fallbackMapFrame" title="WI컨벤션 주변 약도" loading="lazy" referrerpolicy="no-referrer"></iframe>
-              <a id="naverMapOpenLink" href="https://map.naver.com" target="_blank" rel="noreferrer">네이버지도에서 크게 보기 <span aria-hidden="true">↗</span></a>
             </div>
           </div>
           <p class="naver-map-card__notice" id="naverMapNotice">지도를 누르면 네이버지도 길찾기로 연결됩니다.</p>
         </div>
         <div class="directions__actions slide-item">
+          <a id="naverMapLink" class="route-button" target="_blank" rel="noreferrer">네이버지도</a>
           <a id="kakaoMapLink" class="route-button" target="_blank" rel="noreferrer">카카오맵</a>
           <button id="copyAddressButton" class="route-button route-button--quiet" type="button">주소 복사</button>
         </div>
@@ -191,6 +194,7 @@
       <section class="section gallery reveal" id="gallerySection" hidden>
         <p class="section-title slide-item">Wedding Gallery</p>
         <div class="gallery__grid" id="gallery"></div>
+        <button class="gallery__more" id="galleryMoreButton" type="button" aria-expanded="false" hidden>사진 더보기</button>
       </section>
 
       <section class="ending reveal">
@@ -207,6 +211,6 @@
       <audio id="bgm" loop preload="none"></audio>
     </main>
 
-    <script src="app.js?v=20260718-6"></script>
+    <script src="app.js?v=20260828-1"></script>
   </body>
 </html>
