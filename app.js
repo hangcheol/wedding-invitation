@@ -11,6 +11,11 @@ function setOptionalText(id, value, { parentheses = false } = {}) {
   element.hidden = !text;
 }
 
+function clampNumber(value, min, max, fallback) {
+  const number = Number(value);
+  return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : fallback;
+}
+
 const TEMPLATES = new Set(["editorial", "paper-story"]);
 
 function showStaticIntro() {
@@ -100,6 +105,12 @@ async function loadInvitation() {
   setText("groomEnd", config.couple.groom);
   setText("brideEnd", config.couple.bride);
   setText("paperCoverNames", config.message.coverNames || `${config.couple.bride}과 ${config.couple.groom}`);
+  const paperCoverNames = document.getElementById("paperCoverNames");
+  if (paperCoverNames) {
+    paperCoverNames.hidden = config.design?.coverNamesVisible === false;
+    paperCoverNames.style.setProperty("--cover-names-top", `${clampNumber(config.design?.coverNamesTop, 20, 72, 35)}%`);
+    paperCoverNames.style.setProperty("--cover-names-size", `${clampNumber(config.design?.coverNamesSize, 11, 24, 16)}px`);
+  }
   setText("intro", config.message.intro);
   setText("closing", config.message.closing);
   setText("displayDate", config.event.displayDate);

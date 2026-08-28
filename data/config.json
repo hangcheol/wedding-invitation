@@ -73,7 +73,10 @@
   },
   "design": {
     "template": "paper-story",
-    "introAnimation": true
+    "introAnimation": true,
+    "coverNamesVisible": false,
+    "coverNamesTop": 35,
+    "coverNamesSize": 16
   },
   "sections": {
     "cover": true,
