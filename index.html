@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="ko" data-template="paper-story">
+<html lang="ko" data-template="paper-story" style="color-scheme: only light; background-color: #f5f1ec;">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="only light">
     <meta name="supported-color-schemes" content="light">
+    <meta name="darkreader-lock">
     <title>조항철 &amp; 남명은 결혼합니다</title>
     <meta name="description" content="2026년 11월 8일 · 오후 1시 · WI 컨벤션 W홀">
     <meta name="theme-color" content="#f5f1ec" media="(prefers-color-scheme: light)">
@@ -27,7 +28,10 @@
       })();
     </script>
     <script id="naverMapsApi" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=WhA25IKaFafTRR4Z_WCj"></script>
-    <link rel="stylesheet" href="styles.css?v=20260828-1">
+    <style>
+      :root, html, body { color-scheme: only light !important; background-color: #f5f1ec !important; }
+    </style>
+    <link rel="stylesheet" href="styles.css?v=20260828-2">
   </head>
   <body>
     <main class="phone">
@@ -132,7 +136,7 @@
               <iframe id="fallbackMapFrame" title="WI컨벤션 주변 약도" loading="lazy" referrerpolicy="no-referrer"></iframe>
             </div>
           </div>
-          <p class="naver-map-card__notice" id="naverMapNotice">지도를 누르면 네이버지도 길찾기로 연결됩니다.</p>
+          <p class="naver-map-card__notice" id="naverMapNotice">지도에서 주변 위치를 확인할 수 있습니다.</p>
         </div>
         <div class="directions__actions slide-item">
           <a id="naverMapLink" class="route-button" target="_blank" rel="noreferrer">네이버지도</a>

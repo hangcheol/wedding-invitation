@@ -152,8 +152,6 @@ function setupDirections(config) {
 
   if (kakaoLink) kakaoLink.href = `https://map.kakao.com/link/search/${encodeURIComponent(query)}`;
   if (naverLink) naverLink.href = naverSearchUrl;
-  const naverOpenLink = document.getElementById("naverMapOpenLink");
-  if (naverOpenLink) naverOpenLink.href = naverSearchUrl;
   setupNaverMap({
     enabled: document.getElementById("naverMapsApi")?.hasAttribute("src") === true,
     latitude: Number(directions.latitude) || 37.2865317,
@@ -288,8 +286,8 @@ function renderGallery(galleryPhotos, enabled) {
   if (!gallery || !gallerySection || !enabled || galleryPhotos.length === 0) return;
 
   gallerySection.hidden = false;
-  gallery.replaceChildren(
-    ...galleryPhotos.map((src, index) => {
+  const renderPhotos = (photos) => {
+    gallery.replaceChildren(...photos.map((src, index) => {
       const image = document.createElement("img");
       image.className = "slide-item";
       image.src = src;
@@ -299,18 +297,24 @@ function renderGallery(galleryPhotos, enabled) {
       image.width = 360;
       image.height = 450;
       return image;
-    })
-  );
+    }));
+  };
 
   const moreButton = document.getElementById("galleryMoreButton");
-  if (!moreButton || galleryPhotos.length <= 8) return;
-  gallery.classList.add("is-collapsed");
+  if (!moreButton || galleryPhotos.length <= 8) {
+    renderPhotos(galleryPhotos);
+    return;
+  }
+
+  let expanded = false;
+  renderPhotos(galleryPhotos.slice(0, 8));
   moreButton.hidden = false;
   moreButton.textContent = `사진 더보기 (${galleryPhotos.length - 8})`;
   moreButton.addEventListener("click", () => {
-    const collapsed = gallery.classList.toggle("is-collapsed");
-    moreButton.textContent = collapsed ? `사진 더보기 (${galleryPhotos.length - 8})` : "사진 접기";
-    moreButton.setAttribute("aria-expanded", String(!collapsed));
+    expanded = !expanded;
+    renderPhotos(expanded ? galleryPhotos : galleryPhotos.slice(0, 8));
+    moreButton.textContent = expanded ? "사진 접기" : `사진 더보기 (${galleryPhotos.length - 8})`;
+    moreButton.setAttribute("aria-expanded", String(expanded));
   });
 }
 
