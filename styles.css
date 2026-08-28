@@ -246,8 +246,9 @@ button { cursor: pointer; }
   --paper-canvas: #fbfaf6;
   --paper-surface: #f3f0e9;
   --paper-frame: #fdfbf7;
-  --paper-frame-line: rgba(66, 58, 52, .16);
-  --paper-frame-shadow: 0 14px 30px rgba(58, 49, 42, .1);
+  --paper-frame-line: rgba(58, 50, 44, .13);
+  --paper-frame-highlight: rgba(255, 255, 255, .46);
+  --paper-frame-shadow: 0 18px 38px rgba(58, 49, 42, .075), 0 2px 6px rgba(58, 49, 42, .045);
 }
 
 [data-template="paper-story"] #coverSection { order: 1; }
@@ -475,8 +476,8 @@ button { cursor: pointer; }
 .paper-photo-story__line path { stroke-dasharray: 560; stroke-dashoffset: 560; }
 .paper-photo-story.is-visible .paper-photo-story__line path { animation: paper-draw 1.2s ease forwards; }
 .paper-photo-story__kicker { margin: 0 0 25px; color: #91877e; font-family: var(--serif); font-size: 10px; letter-spacing: 0.22em; }
-.paper-photo-story__frame { position: relative; width: calc(100% - 12px); margin: 0 auto; padding: 7px; border: 1px solid var(--paper-frame-line); border-radius: 3px; background: var(--paper-frame); box-shadow: var(--paper-frame-shadow); }
-.paper-photo-story__frame::after { display: none; }
+.paper-photo-story__frame { position: relative; width: calc(100% - 12px); margin: 0 auto; overflow: hidden; border-radius: 1px; background: transparent; box-shadow: 0 0 0 1px var(--paper-frame-line), var(--paper-frame-shadow); }
+.paper-photo-story__frame::after { position: absolute; inset: 0; display: block; border: 1px solid var(--paper-frame-highlight); content: ""; pointer-events: none; }
 .paper-photo-story__image { width: 100%; aspect-ratio: 3 / 4; background-position: center; }
 .paper-photo-story__caption { margin: 31px 0 0; font-family: var(--serif); font-size: 17px; line-height: 1.7; }
 
@@ -489,7 +490,7 @@ button { cursor: pointer; }
 [data-template="paper-story"] .directions .section-kicker { color: #7e876f; }
 [data-template="paper-story"] .directions__mark { color: var(--paper-coral); }
 [data-template="paper-story"] .naver-map-card { width: min(340px, 100%); margin-top: 30px; }
-[data-template="paper-story"] .naver-map-card__canvas { border-color: var(--paper-frame-line); border-radius: 3px; box-shadow: 0 12px 26px rgba(58,49,42,.09); }
+[data-template="paper-story"] .naver-map-card__canvas { border: 0; border-radius: 1px; box-shadow: 0 0 0 1px var(--paper-frame-line), 0 12px 28px rgba(58,49,42,.065); }
 [data-template="paper-story"] .naver-map-card__notice { color: #6f7466; }
 [data-template="paper-story"] .transport-guide__title { color: var(--paper-ink); }
 [data-template="paper-story"] .transport-guide details { border-color: rgba(42,51,41,.32); }
@@ -503,12 +504,12 @@ button { cursor: pointer; }
 [data-template="paper-story"] .route-button--quiet { background: transparent; color: var(--paper-ink); }
 
 [data-template="paper-story"] .gallery { background: var(--paper-surface); }
-[data-template="paper-story"] .gallery__grid { gap: 14px; }
-[data-template="paper-story"] .gallery__grid img { padding: 6px; border: 1px solid var(--paper-frame-line); border-radius: 3px; background: var(--paper-frame); box-shadow: 0 9px 22px rgba(58,49,42,.09); transform: none; }
+[data-template="paper-story"] .gallery__grid { gap: 10px; }
+[data-template="paper-story"] .gallery__grid img { padding: 0; border: 0; border-radius: 1px; background: var(--paper-frame); box-shadow: 0 0 0 1px var(--paper-frame-line); transform: none; }
 
 [data-template="paper-story"] .profile { background: #fbfaf6; }
-[data-template="paper-story"] .profile__photo { border: 6px solid var(--paper-frame); border-radius: 999px 999px 18px 18px; outline: 1px solid var(--paper-frame-line); background-clip: padding-box; box-shadow: 0 10px 24px rgba(58,49,42,.09); }
-[data-template="paper-story"] .venue-card { border: 6px solid var(--paper-frame); border-radius: 3px; outline: 1px solid var(--paper-frame-line); background-clip: padding-box; box-shadow: var(--paper-frame-shadow); }
+[data-template="paper-story"] .profile__photo { border: 0; border-radius: 999px 999px 3px 3px; outline: 0; background-clip: border-box; box-shadow: 0 0 0 1px var(--paper-frame-line), inset 0 0 0 1px var(--paper-frame-highlight), 0 12px 28px rgba(58,49,42,.065); }
+[data-template="paper-story"] .venue-card { overflow: hidden; border: 0; border-radius: 1px; outline: 0; background-clip: border-box; box-shadow: 0 0 0 1px var(--paper-frame-line), inset 0 0 0 1px var(--paper-frame-highlight), var(--paper-frame-shadow); }
 [data-template="paper-story"] .contact-button { border-radius: 0; border-color: var(--paper-ink); }
 [data-template="paper-story"] .gallery__more { border-color: var(--paper-ink); }
 
