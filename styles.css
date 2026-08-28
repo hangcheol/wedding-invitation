@@ -51,6 +51,16 @@ button { cursor: pointer; }
   background-size: cover;
 }
 
+.photo-slot,
+.gallery__grid img,
+.paper-intro__media,
+.paper-intro__static {
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 .cover { min-height: 100svh; }
 .cover__photo {
   position: relative;

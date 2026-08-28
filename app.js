@@ -17,6 +17,20 @@ function clampNumber(value, min, max, fallback) {
 }
 
 const TEMPLATES = new Set(["editorial", "paper-story"]);
+const PROTECTED_MEDIA_SELECTOR = "img, video, .photo-slot";
+
+function protectMedia() {
+  document.querySelectorAll("img, video").forEach((element) => {
+    element.draggable = false;
+  });
+
+  ["contextmenu", "dragstart"].forEach((eventName) => {
+    document.addEventListener(eventName, (event) => {
+      const target = event.target;
+      if (target instanceof Element && target.closest(PROTECTED_MEDIA_SELECTOR)) event.preventDefault();
+    });
+  });
+}
 
 function showStaticIntro() {
   const video = document.querySelector(".paper-intro__media");
@@ -330,6 +344,7 @@ function renderGallery(galleryPhotos, enabled) {
       image.alt = `웨딩 사진 ${index + 1}`;
       image.loading = "lazy";
       image.decoding = "async";
+      image.draggable = false;
       image.width = 360;
       image.height = 450;
       return image;
@@ -453,6 +468,7 @@ function renderCalendar(dateValue) {
   calendar.replaceChildren(monthLabel, grid);
 }
 
+protectMedia();
 setupIntroMedia();
 setupReveal();
 
