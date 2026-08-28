@@ -1,5 +1,5 @@
 :root {
-  color-scheme: light;
+  color-scheme: only light;
   --ink: #302b28;
   --muted: #817873;
   --paper: #fcfaf7;
@@ -14,12 +14,12 @@
 
 html {
   scroll-behavior: smooth;
-  background: #eee9e4;
+  background: #f5f1ec;
 }
 
 body {
   margin: 0;
-  background: #eee9e4;
+  background: #f5f1ec;
   color: var(--ink);
   font-family: var(--body-font);
   font-weight: 400;
