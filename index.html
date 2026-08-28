@@ -17,6 +17,7 @@
     <meta property="og:image" content="https://wedding.hamyeon.com/assets/photos/hero-1280.webp">
     <meta property="og:image:alt" content="조항철과 남명은의 웨딩 사진">
     <meta name="twitter:card" content="summary_large_image">
+    <link rel="preload" as="image" href="assets/illustrations/invitation-cover.jpg">
     <link id="heroPreload" rel="preload" as="image" href="assets/photos/hero-1280.webp" fetchpriority="high">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,25 +35,15 @@
         :root, html, body { color-scheme: light !important; background-color: #f5f1ec !important; color: #302b28 !important; }
       }
     </style>
-    <link rel="stylesheet" href="styles.css?v=20260828-3">
+    <link rel="stylesheet" href="styles.css?v=20260828-4">
   </head>
   <body>
     <main class="phone">
       <section class="section cover reveal" id="coverSection">
         <div class="paper-cover" aria-label="손그림 청첩장 첫 화면">
           <div class="paper-intro">
-            <svg class="paper-intro__title" viewBox="70 80 270 125" role="img" aria-label="저희, 결혼합니다">
-              <image href="assets/illustrations/invitation-cover.jpg" width="401" height="590"></image>
-            </svg>
+            <img class="paper-intro__sheet" src="assets/illustrations/invitation-cover.jpg" alt="저희, 결혼합니다. 신랑 신부와 강아지가 함께 춤추는 손그림">
             <p class="paper-intro__names" id="paperCoverNames">명은과 항철</p>
-            <div class="paper-intro__characters" role="img" aria-label="춤추며 등장하는 신랑 신부와 강아지">
-              <svg class="paper-intro__character-half paper-intro__character-half--left" viewBox="70 210 270 205" aria-hidden="true">
-                <image href="assets/illustrations/invitation-cover.jpg" width="401" height="590"></image>
-              </svg>
-              <svg class="paper-intro__character-half paper-intro__character-half--right" viewBox="70 210 270 205" aria-hidden="true">
-                <image href="assets/illustrations/invitation-cover.jpg" width="401" height="590"></image>
-              </svg>
-            </div>
           </div>
           <p class="paper-cover__scroll">천천히 아래로 넘겨주세요 <span>↓</span></p>
         </div>

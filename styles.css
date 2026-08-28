@@ -267,7 +267,7 @@ button { cursor: pointer; }
   justify-content: center;
   flex-direction: column;
   overflow: hidden;
-  padding: max(34px, env(safe-area-inset-top)) 28px max(30px, env(safe-area-inset-bottom));
+  padding: 0;
   color: var(--paper-ink);
   background: #fff;
 }
@@ -279,61 +279,39 @@ button { cursor: pointer; }
 [data-template="paper-story"] .paper-cover__line { display: none; }
 
 .paper-intro {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 1;
-  display: flex;
-  width: 100%;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
+  overflow: hidden;
+  background: #fff;
 }
 
-.paper-intro__title {
+.paper-intro__sheet {
+  position: absolute;
+  inset: 0;
   display: block;
-  width: min(250px, 82vw);
-  height: auto;
-  opacity: 0;
-  mix-blend-mode: multiply;
-  transform: translateY(-10px) scale(.98);
-  animation: paper-title-appear 720ms ease 180ms forwards;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: translateY(10px) scale(1.055);
+  transform-origin: 50% 48%;
+  animation: paper-sheet-settle 1.35s cubic-bezier(.2,.75,.2,1) forwards;
 }
 
 .paper-intro__names {
-  margin: -5px 0 3px;
-  color: var(--paper-ink);
-  font-size: 17px;
-  letter-spacing: .1em;
-  opacity: 0;
-  animation: paper-title-appear 720ms ease 720ms forwards;
-}
-
-.paper-intro__characters {
-  position: relative;
-  width: min(290px, 92vw);
-  aspect-ratio: 270 / 205;
-  margin-top: 14px;
-  animation: paper-cast-dance 1.25s ease-in-out 1.42s 2;
-}
-
-.paper-intro__character-half {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  top: 30.5%;
+  right: 0;
+  left: 0;
+  margin: 0;
+  color: var(--paper-ink);
+  font-size: clamp(15px, 4.4vw, 18px);
+  letter-spacing: .1em;
+  text-align: center;
   opacity: 0;
-  mix-blend-mode: multiply;
-}
-
-.paper-intro__character-half--left {
-  clip-path: inset(0 50% 0 0);
-  transform: translateX(-110px) rotate(-5deg);
-  animation: paper-cast-left 940ms cubic-bezier(.18,.78,.2,1) 520ms forwards;
-}
-
-.paper-intro__character-half--right {
-  clip-path: inset(0 0 0 50%);
-  transform: translateX(110px) rotate(5deg);
-  animation: paper-cast-right 940ms cubic-bezier(.18,.78,.2,1) 520ms forwards;
+  transform: translateY(7px);
+  animation: paper-name-appear 650ms ease 760ms forwards;
 }
 
 .paper-cover__line {
@@ -432,7 +410,12 @@ button { cursor: pointer; }
   animation: paper-fade-up 500ms ease 2.25s forwards;
 }
 .paper-cover__scroll {
-  margin: 11px 0 0;
+  position: absolute;
+  right: 18px;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  left: 18px;
+  z-index: 2;
+  margin: 0;
   color: #807871;
   font-size: 10px;
   letter-spacing: 0.04em;
@@ -562,10 +545,8 @@ button { cursor: pointer; }
 @keyframes paper-note-float { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-6px) rotate(4deg); } }
 @keyframes paper-scroll { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
 @keyframes paper-dog-route { from { opacity: 0; transform: translate(-72px, 0); } to { opacity: 1; transform: translate(0, 0); } }
-@keyframes paper-title-appear { to { opacity: 1; transform: translateY(0) scale(1); } }
-@keyframes paper-cast-left { 0% { opacity: 0; transform: translateX(-110px) rotate(-5deg); } 70% { opacity: 1; transform: translateX(5px) rotate(1deg); } 100% { opacity: 1; transform: translateX(0) rotate(0); } }
-@keyframes paper-cast-right { 0% { opacity: 0; transform: translateX(110px) rotate(5deg); } 70% { opacity: 1; transform: translateX(-5px) rotate(-1deg); } 100% { opacity: 1; transform: translateX(0) rotate(0); } }
-@keyframes paper-cast-dance { 0%, 100% { transform: translateY(0) rotate(0); } 35% { transform: translateY(-5px) rotate(-1deg); } 70% { transform: translateY(-2px) rotate(1deg); } }
+@keyframes paper-sheet-settle { to { transform: translateY(0) scale(1); } }
+@keyframes paper-name-appear { to { opacity: 1; transform: translateY(0); } }
 
 .no-paper-intro .paper-cover__line,
 .no-paper-intro .paper-card,
@@ -577,10 +558,8 @@ button { cursor: pointer; }
 .no-paper-intro .paper-notes,
 .no-paper-intro .paper-card__event,
 .no-paper-intro .paper-cover__names,
-.no-paper-intro .paper-intro__title,
+.no-paper-intro .paper-intro__sheet,
 .no-paper-intro .paper-intro__names,
-.no-paper-intro .paper-intro__characters,
-.no-paper-intro .paper-intro__character-half,
 .no-paper-intro .paper-cover__scroll {
   animation: none;
   opacity: 1;
@@ -601,10 +580,8 @@ button { cursor: pointer; }
   .paper-notes,
   .paper-card__event,
   .paper-cover__names,
-  .paper-intro__title,
+  .paper-intro__sheet,
   .paper-intro__names,
-  .paper-intro__characters,
-  .paper-intro__character-half,
   .paper-cover__scroll,
   .paper-photo-story__line path,
   .paper-route-art__path,
