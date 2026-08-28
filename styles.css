@@ -249,6 +249,7 @@ button { cursor: pointer; }
   --paper-frame-line: rgba(58, 50, 44, .13);
   --paper-frame-highlight: rgba(255, 255, 255, .46);
   --paper-frame-shadow: 0 18px 38px rgba(58, 49, 42, .075), 0 2px 6px rgba(58, 49, 42, .045);
+  --paper-divider: rgba(56, 54, 51, .18);
 }
 
 [data-template="paper-story"] #coverSection { order: 1; }
@@ -504,6 +505,13 @@ button { cursor: pointer; }
 [data-template="paper-story"] .ending { position: relative; padding-block: 90px 112px; background: var(--paper-canvas); }
 [data-template="paper-story"] .ending::before { display: block; margin: 0 auto 25px; color: var(--paper-coral); content: "♪  ·  ♪"; font-size: 18px; letter-spacing: 0.35em; }
 [data-template="paper-story"] .script-small { color: var(--paper-ink); font-style: normal; }
+[data-template="paper-story"] .phone > .section:not(.cover),
+[data-template="paper-story"] .phone > .ending {
+  background-image: linear-gradient(90deg, transparent, var(--paper-divider) 28%, var(--paper-divider) 72%, transparent);
+  background-position: center 30px;
+  background-repeat: no-repeat;
+  background-size: 64px 1px;
+}
 [data-template="paper-story"] .float-actions { gap: 7px; }
 [data-template="paper-story"] .float-actions button,
 [data-template="paper-story"] .music { width: 40px; height: 40px; border-color: rgba(41,39,36,.2); background: rgba(251,250,246,.78); color: #625c57; box-shadow: 0 3px 10px rgba(45,40,42,.08); }
