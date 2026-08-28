@@ -17,7 +17,7 @@
     <meta property="og:image" content="https://wedding.hamyeon.com/assets/photos/hero-1280.webp">
     <meta property="og:image:alt" content="조항철과 남명은의 웨딩 사진">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="preload" as="image" href="assets/illustrations/invitation-cover.jpg">
+    <link rel="preload" as="image" href="assets/animations/wedding-intro-start.png">
     <link id="heroPreload" rel="preload" as="image" href="assets/photos/hero-1280.webp" fetchpriority="high">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,14 +35,18 @@
         :root, html, body { color-scheme: light !important; background-color: #f5f1ec !important; color: #302b28 !important; }
       }
     </style>
-    <link rel="stylesheet" href="styles.css?v=20260828-4">
+    <link rel="stylesheet" href="styles.css?v=20260828-5">
   </head>
   <body>
     <main class="phone">
       <section class="section cover reveal" id="coverSection">
         <div class="paper-cover" aria-label="손그림 청첩장 첫 화면">
           <div class="paper-intro">
-            <img class="paper-intro__sheet" src="assets/illustrations/invitation-cover.jpg" alt="저희, 결혼합니다. 신랑 신부와 강아지가 함께 춤추는 손그림">
+            <video class="paper-intro__media" autoplay muted playsinline preload="auto" poster="assets/animations/wedding-intro-start.png" aria-label="저희, 결혼합니다. 신랑 신부와 강아지가 차례로 등장하는 손그림 애니메이션">
+              <source src="assets/animations/wedding-intro-432x768.webm" type="video/webm">
+              <img src="assets/animations/wedding-intro-432x768.gif" alt="저희, 결혼합니다. 신랑 신부와 강아지가 차례로 등장하는 손그림 애니메이션">
+            </video>
+            <img class="paper-intro__static" src="assets/animations/wedding-intro-poster.png" alt="" aria-hidden="true">
             <p class="paper-intro__names" id="paperCoverNames">명은과 항철</p>
           </div>
           <p class="paper-cover__scroll">천천히 아래로 넘겨주세요 <span>↓</span></p>
@@ -209,6 +213,6 @@
       <audio id="bgm" loop preload="none"></audio>
     </main>
 
-    <script src="app.js?v=20260828-1"></script>
+    <script src="app.js?v=20260828-2"></script>
   </body>
 </html>

@@ -286,7 +286,8 @@ button { cursor: pointer; }
   background: #fff;
 }
 
-.paper-intro__sheet {
+.paper-intro__media,
+.paper-intro__static {
   position: absolute;
   inset: 0;
   display: block;
@@ -294,19 +295,22 @@ button { cursor: pointer; }
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transform: translateY(10px) scale(1.055);
-  transform-origin: 50% 48%;
-  animation: paper-sheet-settle 1.35s cubic-bezier(.2,.75,.2,1) forwards;
+  background: #fff;
 }
+.paper-intro__static { display: none; }
+.intro-media-static .paper-intro__media,
+.no-paper-intro .paper-intro__media { display: none; }
+.intro-media-static .paper-intro__static,
+.no-paper-intro .paper-intro__static { display: block; }
 
 .paper-intro__names {
   position: absolute;
-  top: 30.5%;
+  top: 35%;
   right: 0;
   left: 0;
   margin: 0;
   color: var(--paper-ink);
-  font-size: clamp(15px, 4.4vw, 18px);
+  font-size: clamp(13px, 3.8vw, 16px);
   letter-spacing: .1em;
   text-align: center;
   opacity: 0;
@@ -545,7 +549,6 @@ button { cursor: pointer; }
 @keyframes paper-note-float { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-6px) rotate(4deg); } }
 @keyframes paper-scroll { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
 @keyframes paper-dog-route { from { opacity: 0; transform: translate(-72px, 0); } to { opacity: 1; transform: translate(0, 0); } }
-@keyframes paper-sheet-settle { to { transform: translateY(0) scale(1); } }
 @keyframes paper-name-appear { to { opacity: 1; transform: translateY(0); } }
 
 .no-paper-intro .paper-cover__line,
@@ -558,7 +561,6 @@ button { cursor: pointer; }
 .no-paper-intro .paper-notes,
 .no-paper-intro .paper-card__event,
 .no-paper-intro .paper-cover__names,
-.no-paper-intro .paper-intro__sheet,
 .no-paper-intro .paper-intro__names,
 .no-paper-intro .paper-cover__scroll {
   animation: none;
@@ -580,12 +582,13 @@ button { cursor: pointer; }
   .paper-notes,
   .paper-card__event,
   .paper-cover__names,
-  .paper-intro__sheet,
   .paper-intro__names,
   .paper-cover__scroll,
   .paper-photo-story__line path,
   .paper-route-art__path,
   .paper-route-art__dog { animation: none; opacity: 1; stroke-dashoffset: 0; transform: none; }
+  .paper-intro__media { display: none; }
+  .paper-intro__static { display: block; }
 }
 
 @media (max-width: 360px) {

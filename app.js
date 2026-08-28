@@ -13,6 +13,29 @@ function setOptionalText(id, value, { parentheses = false } = {}) {
 
 const TEMPLATES = new Set(["editorial", "paper-story"]);
 
+function showStaticIntro() {
+  const video = document.querySelector(".paper-intro__media");
+  document.documentElement.classList.add("intro-media-static");
+  if (video) video.pause();
+}
+
+function setupIntroMedia() {
+  const video = document.querySelector(".paper-intro__media");
+  if (!video) return;
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    showStaticIntro();
+    return;
+  }
+
+  video.addEventListener("ended", () => {
+    showStaticIntro();
+  }, { once: true });
+
+  const playback = video.play();
+  if (playback) playback.catch(showStaticIntro);
+}
+
 function resolveTemplate(config) {
   const preview = new URLSearchParams(window.location.search).get("previewTemplate");
   if (TEMPLATES.has(preview)) return preview;
@@ -52,7 +75,9 @@ async function loadInvitation() {
   const config = await response.json();
   const template = resolveTemplate(config);
   document.documentElement.dataset.template = template;
-  document.documentElement.classList.toggle("no-paper-intro", config.design?.introAnimation === false);
+  const introDisabled = config.design?.introAnimation === false;
+  document.documentElement.classList.toggle("no-paper-intro", introDisabled);
+  if (introDisabled) showStaticIntro();
   const sections = config.sections || {};
   const isEnabled = (name) => sections[name] !== false;
 
@@ -417,6 +442,7 @@ function renderCalendar(dateValue) {
   calendar.replaceChildren(monthLabel, grid);
 }
 
+setupIntroMedia();
 setupReveal();
 
 loadInvitation().catch((error) => {
