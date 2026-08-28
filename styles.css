@@ -1,5 +1,5 @@
 :root {
-  color-scheme: light dark;
+  color-scheme: only light;
   --ink: #302b28;
   --muted: #817873;
   --paper: #fcfaf7;
@@ -239,12 +239,12 @@ button { cursor: pointer; }
 }
 
 [data-template="paper-story"] .phone {
-  --paper-ink: #292724;
-  --paper-coral: #d78f79;
+  --paper-ink: #383633;
+  --paper-coral: #9c8479;
   --paper-sage: #a7ae95;
-  --paper-line: #cfc8bd;
+  --paper-line: #d8d3cc;
   --paper-canvas: #fbfaf6;
-  --paper-surface: #f3f0e9;
+  --paper-surface: #fbfaf6;
   --paper-frame: #fdfbf7;
   --paper-frame-line: rgba(58, 50, 44, .13);
   --paper-frame-highlight: rgba(255, 255, 255, .46);
@@ -438,58 +438,44 @@ button { cursor: pointer; }
   min-height: 560px;
   gap: 0;
   padding: 108px 0 92px;
-  background: #fbfaf6;
+  background: var(--paper-canvas);
 }
 [data-template="paper-story"] .invitation::before,
 [data-template="paper-story"] .invitation::after {
-  display: block;
-  width: 78px;
-  height: 19px;
-  margin: 0 auto 38px;
-  border-top: 1.5px solid var(--paper-coral);
-  border-radius: 50%;
-  content: "";
-  transform: rotate(-4deg);
+  display: none;
 }
-[data-template="paper-story"] .invitation::after { margin: 38px auto 0; transform: rotate(5deg); }
 [data-template="paper-story"] .invitation__photo { display: none; }
-[data-template="paper-story"] .invitation .section-kicker { color: var(--paper-coral); }
+[data-template="paper-story"] .invitation .section-kicker { color: #8b8179; }
 [data-template="paper-story"] .couple-line { font-family: var(--body-font); font-size: 17px; }
+[data-template="paper-story"] .invitation__letter > p:not(.section-kicker):not(.couple-line) { color: #57524e; }
 
 [data-template="paper-story"] .paper-photo-story {
   position: relative;
   display: block;
-  padding: 84px 30px 102px;
-  background: var(--paper-surface);
+  padding: 92px 0 98px;
+  background: var(--paper-canvas);
   text-align: center;
 }
 .paper-photo-story__line {
-  position: absolute;
-  top: -38px;
-  left: 0;
-  width: 100%;
-  height: 76px;
-  fill: none;
-  stroke: var(--paper-coral);
-  stroke-width: 1.4;
+  display: none;
 }
 .paper-photo-story__line path { stroke-dasharray: 560; stroke-dashoffset: 560; }
 .paper-photo-story.is-visible .paper-photo-story__line path { animation: paper-draw 1.2s ease forwards; }
-.paper-photo-story__kicker { margin: 0 0 25px; color: #91877e; font-family: var(--serif); font-size: 10px; letter-spacing: 0.22em; }
-.paper-photo-story__frame { position: relative; width: calc(100% - 12px); margin: 0 auto; overflow: hidden; border-radius: 1px; background: transparent; box-shadow: 0 0 0 1px var(--paper-frame-line), var(--paper-frame-shadow); }
-.paper-photo-story__frame::after { position: absolute; inset: 0; display: block; border: 1px solid var(--paper-frame-highlight); content: ""; pointer-events: none; }
-.paper-photo-story__image { width: 100%; aspect-ratio: 3 / 4; background-position: center; }
-.paper-photo-story__caption { margin: 31px 0 0; font-family: var(--serif); font-size: 17px; line-height: 1.7; }
+.paper-photo-story__kicker { margin: 0 0 28px; color: #8b8179; font-family: var(--serif); font-size: 10px; letter-spacing: 0.22em; }
+.paper-photo-story__frame { position: relative; width: 100%; margin: 0 auto; overflow: hidden; border-radius: 0; background: transparent; box-shadow: none; }
+.paper-photo-story__frame::after { position: absolute; inset: 0; display: block; border: 1px solid rgba(58,50,44,.08); content: ""; pointer-events: none; }
+.paper-photo-story__image { width: 100%; aspect-ratio: 7 / 5; background-position: center; }
+.paper-photo-story__caption { margin: 34px 0 0; font-family: var(--serif); font-size: 16px; line-height: 1.75; }
 
-[data-template="paper-story"] .details { padding-block: 104px 84px; background: #fbfaf6; }
-[data-template="paper-story"] .details .section-kicker { color: var(--paper-coral); }
+[data-template="paper-story"] .details { padding-block: 104px 84px; background: var(--paper-canvas); }
+[data-template="paper-story"] .details .section-kicker { color: #8b8179; }
 [data-template="paper-story"] .calendar { border-color: var(--paper-line); }
 [data-template="paper-story"] .calendar__grid .is-event { background: var(--paper-coral); box-shadow: none; transform: rotate(-5deg); }
 
-[data-template="paper-story"] .directions { padding-block: 94px 82px; background: #eef0e8; }
-[data-template="paper-story"] .directions .section-kicker { color: #7e876f; }
+[data-template="paper-story"] .directions { padding-block: 94px 82px; background: var(--paper-canvas); }
+[data-template="paper-story"] .directions .section-kicker { color: #8b8179; }
 [data-template="paper-story"] .directions__mark { color: var(--paper-coral); }
-[data-template="paper-story"] .naver-map-card { width: min(340px, 100%); margin-top: 30px; }
+[data-template="paper-story"] .naver-map-card { width: calc(100% + 40px); margin: 30px -20px 4px; }
 [data-template="paper-story"] .naver-map-card__canvas { border: 0; border-radius: 1px; box-shadow: 0 0 0 1px var(--paper-frame-line), 0 12px 28px rgba(58,49,42,.065); }
 [data-template="paper-story"] .naver-map-card__notice { color: #6f7466; }
 [data-template="paper-story"] .transport-guide__title { color: var(--paper-ink); }
@@ -503,27 +489,31 @@ button { cursor: pointer; }
 [data-template="paper-story"] .route-button { border-radius: 0; border-color: var(--paper-ink); background: var(--paper-ink); }
 [data-template="paper-story"] .route-button--quiet { background: transparent; color: var(--paper-ink); }
 
-[data-template="paper-story"] .gallery { background: var(--paper-surface); }
-[data-template="paper-story"] .gallery__grid { gap: 10px; }
-[data-template="paper-story"] .gallery__grid img { padding: 0; border: 0; border-radius: 1px; background: var(--paper-frame); box-shadow: 0 0 0 1px var(--paper-frame-line); transform: none; }
+[data-template="paper-story"] .gallery { padding-inline: 0; background: var(--paper-canvas); }
+[data-template="paper-story"] .gallery .section-title { margin-bottom: 30px; }
+[data-template="paper-story"] .gallery__grid { gap: 4px; }
+[data-template="paper-story"] .gallery__grid img { padding: 0; border: 0; border-radius: 0; background: var(--paper-frame); box-shadow: none; transform: none; }
 
-[data-template="paper-story"] .profile { background: #fbfaf6; }
-[data-template="paper-story"] .profile__photo { border: 0; border-radius: 999px 999px 3px 3px; outline: 0; background-clip: border-box; box-shadow: 0 0 0 1px var(--paper-frame-line), inset 0 0 0 1px var(--paper-frame-highlight), 0 12px 28px rgba(58,49,42,.065); }
-[data-template="paper-story"] .venue-card { overflow: hidden; border: 0; border-radius: 1px; outline: 0; background-clip: border-box; box-shadow: 0 0 0 1px var(--paper-frame-line), inset 0 0 0 1px var(--paper-frame-highlight), var(--paper-frame-shadow); }
+[data-template="paper-story"] .profile { background: var(--paper-canvas); }
+[data-template="paper-story"] .profile__photo { border: 0; border-radius: 999px 999px 2px 2px; outline: 0; background-clip: border-box; box-shadow: 0 0 0 1px rgba(58,50,44,.1); }
+[data-template="paper-story"] .venue-card { width: calc(100% + 60px); margin-left: -30px; overflow: hidden; border: 0; border-radius: 0; outline: 0; background-clip: border-box; box-shadow: none; }
 [data-template="paper-story"] .contact-button { border-radius: 0; border-color: var(--paper-ink); }
 [data-template="paper-story"] .gallery__more { border-color: var(--paper-ink); }
 
-[data-template="paper-story"] .ending { position: relative; padding-block: 90px 112px; background: #fbfaf6; }
-[data-template="paper-story"] .ending::before { display: block; margin: 0 auto 25px; color: var(--paper-coral); content: "♪  ·  ♪"; font-size: 18px; letter-spacing: 0.35em; animation: paper-note-float 2s ease-in-out infinite; }
+[data-template="paper-story"] .parking { background: var(--paper-canvas); }
+[data-template="paper-story"] .ending { position: relative; padding-block: 90px 112px; background: var(--paper-canvas); }
+[data-template="paper-story"] .ending::before { display: block; margin: 0 auto 25px; color: var(--paper-coral); content: "♪  ·  ♪"; font-size: 18px; letter-spacing: 0.35em; }
 [data-template="paper-story"] .script-small { color: var(--paper-ink); font-style: normal; }
+[data-template="paper-story"] .float-actions { gap: 7px; }
 [data-template="paper-story"] .float-actions button,
-[data-template="paper-story"] .music { border-color: rgba(41,39,36,.35); background: rgba(251,250,246,.86); color: var(--paper-ink); }
+[data-template="paper-story"] .music { width: 40px; height: 40px; border-color: rgba(41,39,36,.2); background: rgba(251,250,246,.78); color: #625c57; box-shadow: 0 3px 10px rgba(45,40,42,.08); }
 
-/* Samsung Internet can prefer this media query over its automatic Force Dark
-   conversion when both schemes are advertised. The invitation intentionally
-   keeps its paper palette in either system theme. */
+[data-template="paper-story"].has-reveal .reveal:not(.cover) { transform: translateY(10px); transition-duration: 400ms; }
+[data-template="paper-story"].has-reveal .slide-item { opacity: 1; transform: none; transition: none; }
+
+/* The invitation is an intentionally light paper canvas on every system theme. */
 @media (prefers-color-scheme: dark) {
-  :root, html, body, .phone { color-scheme: light !important; }
+  :root, html, body, .phone { color-scheme: only light !important; }
   html, body { background-color: #f5f1ec !important; color: #302b28 !important; }
   .phone,
   [data-template="paper-story"] body,
@@ -537,9 +527,9 @@ button { cursor: pointer; }
   [data-template="paper-story"] .parking,
   [data-template="paper-story"] .ending { background-color: #fbfaf6 !important; color: #292724 !important; }
   [data-template="paper-story"] .paper-photo-story,
-  [data-template="paper-story"] .gallery { background-color: #f3f0e9 !important; color: #292724 !important; }
-  [data-template="paper-story"] .directions { background-color: #eef0e8 !important; color: #292724 !important; }
-  button, input, textarea, select { color-scheme: light !important; }
+  [data-template="paper-story"] .gallery,
+  [data-template="paper-story"] .directions { background-color: #fbfaf6 !important; color: #292724 !important; }
+  button, input, textarea, select { color-scheme: only light !important; }
 }
 
 @keyframes paper-card-in {
@@ -599,4 +589,5 @@ button { cursor: pointer; }
 @media (max-width: 360px) {
   .letter, .details, .parking, .directions { padding-inline: 24px; }
   .invitation { min-height: 580px; padding-block: 76px; }
+  [data-template="paper-story"] .venue-card { width: calc(100% + 48px); margin-left: -24px; }
 }
