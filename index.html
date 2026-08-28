@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="ko" data-template="paper-story" style="color-scheme: only light; background-color: #f5f1ec;">
+<html lang="ko" data-template="paper-story" style="color-scheme: light dark; background-color: #f5f1ec;">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="only light">
-    <meta name="supported-color-schemes" content="light">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
     <meta name="darkreader-lock">
     <title>조항철 &amp; 남명은 결혼합니다</title>
     <meta name="description" content="2026년 11월 8일 · 오후 1시 · WI 컨벤션 W홀">
@@ -29,9 +29,12 @@
     </script>
     <script id="naverMapsApi" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=WhA25IKaFafTRR4Z_WCj"></script>
     <style>
-      :root, html, body { color-scheme: only light !important; background-color: #f5f1ec !important; }
+      :root, html, body { color-scheme: light dark; background-color: #f5f1ec !important; }
+      @media (prefers-color-scheme: dark) {
+        :root, html, body { color-scheme: light !important; background-color: #f5f1ec !important; color: #302b28 !important; }
+      }
     </style>
-    <link rel="stylesheet" href="styles.css?v=20260828-2">
+    <link rel="stylesheet" href="styles.css?v=20260828-3">
   </head>
   <body>
     <main class="phone">

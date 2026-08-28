@@ -1,5 +1,5 @@
 :root {
-  color-scheme: only light !important;
+  color-scheme: light dark;
   --ink: #302b28;
   --muted: #817873;
   --paper: #fcfaf7;
@@ -49,12 +49,6 @@ button { cursor: pointer; }
   background: linear-gradient(135deg, #e5d8cf, #b7a198);
   background-position: center;
   background-size: cover;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root, html, body, .phone { color-scheme: only light !important; }
-  html, body { background-color: #f5f1ec !important; color: #302b28 !important; }
-  .phone { background-color: #fcfaf7 !important; color: #302b28 !important; }
 }
 
 .cover { min-height: 100svh; }
@@ -532,6 +526,29 @@ button { cursor: pointer; }
 [data-template="paper-story"] .script-small { color: var(--paper-ink); font-style: normal; }
 [data-template="paper-story"] .float-actions button,
 [data-template="paper-story"] .music { border-color: rgba(41,39,36,.35); background: rgba(251,250,246,.86); color: var(--paper-ink); }
+
+/* Samsung Internet can prefer this media query over its automatic Force Dark
+   conversion when both schemes are advertised. The invitation intentionally
+   keeps its paper palette in either system theme. */
+@media (prefers-color-scheme: dark) {
+  :root, html, body, .phone { color-scheme: light !important; }
+  html, body { background-color: #f5f1ec !important; color: #302b28 !important; }
+  .phone,
+  [data-template="paper-story"] body,
+  [data-template="paper-story"] .phone { background-color: #fbfaf6 !important; color: #302b28 !important; }
+  [data-template="paper-story"] .paper-cover,
+  [data-template="paper-story"] .paper-photo-story__frame,
+  [data-template="paper-story"] .gallery__grid img { background-color: #fff !important; }
+  [data-template="paper-story"] .invitation,
+  [data-template="paper-story"] .details,
+  [data-template="paper-story"] .profile,
+  [data-template="paper-story"] .parking,
+  [data-template="paper-story"] .ending { background-color: #fbfaf6 !important; color: #292724 !important; }
+  [data-template="paper-story"] .paper-photo-story,
+  [data-template="paper-story"] .gallery { background-color: #f1eee6 !important; color: #292724 !important; }
+  [data-template="paper-story"] .directions { background-color: #eef0e8 !important; color: #292724 !important; }
+  button, input, textarea, select { color-scheme: light !important; }
+}
 
 @keyframes paper-card-in {
   to { opacity: 1; transform: translate3d(0, 0, 0) rotate(-0.65deg); }
