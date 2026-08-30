@@ -220,6 +220,26 @@ button { cursor: pointer; }
 .gallery__grid img { display: block; width: 100%; aspect-ratio: 4 / 5; border-radius: 2px; object-fit: cover; background: #eee8e3; }
 .gallery__more { min-width: 160px; min-height: 44px; margin: 28px auto 0; padding: 9px 18px; border: 1px solid #766c66; background: transparent; color: #514945; font-size: 12px; }
 
+.accounts { padding: 96px 30px 86px; text-align: center; }
+.accounts__intro { max-width: 300px; margin: 0 auto 34px; color: #625c57; font-size: 13px; line-height: 1.9; word-break: keep-all; }
+.accounts__list { max-width: 330px; margin: 0 auto; border-top: 1px solid var(--line); text-align: left; }
+.account-group { border-bottom: 1px solid var(--line); }
+.account-group summary { position: relative; display: flex; min-height: 62px; align-items: center; justify-content: space-between; padding: 0 34px 0 4px; cursor: pointer; list-style: none; font-size: 13px; }
+.account-group summary::-webkit-details-marker { display: none; }
+.account-group summary:focus { outline: 0; }
+.account-group summary:focus-visible { outline: 1px solid rgba(81, 75, 71, .28); outline-offset: 3px; }
+.account-group summary::after { position: absolute; right: 6px; color: #918882; content: "+"; font-family: Arial, sans-serif; font-size: 18px; font-weight: 300; transition: transform .22s ease; }
+.account-group[open] summary::after { transform: rotate(45deg); }
+.account-group summary small { color: #817873; font-size: 11px; }
+.account-card { padding: 4px 4px 22px; }
+.account-card p { margin: 0; }
+.account-card__holder { color: #756d68; font-size: 11px; }
+.account-card__number { margin-top: 4px !important; color: #383431; font-size: 14px; letter-spacing: .015em; }
+.account-card__actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; margin-top: 16px; }
+.account-card__actions > * { display: grid; min-height: 42px; place-items: center; padding: 8px; border: 1px solid #cfc8c1; border-radius: 2px; background: transparent; color: #514b47; font: inherit; font-size: 11px; text-decoration: none; }
+.account-card__actions.is-copy-only > * { grid-column: 1 / -1; }
+.account-card__actions .account-kakaopay { border-color: #f5df46; background: #fee500; color: #2d261f; }
+
 .ending { padding: 70px 0 100px; background: var(--paper); color: #6c6461; text-align: center; }
 .script-small { margin: 0 0 8px; font-family: var(--serif); font-size: 28px; font-style: italic; line-height: 1; }
 .ending p:last-child { margin: 0; font-family: var(--serif); font-size: 12px; letter-spacing: 0.08em; }
@@ -512,6 +532,9 @@ button { cursor: pointer; }
 [data-template="paper-story"] .gallery__more { border-color: var(--paper-ink); }
 
 [data-template="paper-story"] .parking { background: var(--paper-canvas); }
+[data-template="paper-story"] .accounts { background: var(--paper-canvas); }
+[data-template="paper-story"] .accounts__list,
+[data-template="paper-story"] .account-group { border-color: var(--paper-line); }
 [data-template="paper-story"] .ending { position: relative; padding-block: 90px 112px; background: var(--paper-canvas); }
 [data-template="paper-story"] .ending::before { display: block; margin: 0 auto 25px; color: var(--paper-coral); content: "♪  ·  ♪"; font-size: 18px; letter-spacing: 0.35em; }
 [data-template="paper-story"] .script-small { color: var(--paper-ink); font-style: normal; }
@@ -543,6 +566,7 @@ button { cursor: pointer; }
   [data-template="paper-story"] .details,
   [data-template="paper-story"] .profile,
   [data-template="paper-story"] .parking,
+  [data-template="paper-story"] .accounts,
   [data-template="paper-story"] .ending { background-color: #fbfaf6 !important; color: #292724 !important; }
   [data-template="paper-story"] .paper-photo-story,
   [data-template="paper-story"] .gallery,

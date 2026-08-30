@@ -24,6 +24,8 @@ Both templates use the same `data/config.json` content. The published selection 
 
 Content is normally edited from the private admin. `저장 후 공개 배포` commits and pushes this repository, then GitHub Pages rebuilds the site.
 
+The optional account section supports separate groom/bride bank details, account-number copy buttons, and HTTPS KakaoPay transfer links. A side is published only when its bank, account number, and account holder are all present.
+
 ## GitHub Pages
 
 1. Create a public repository, for example `hangcheol/wedding-invitation`.

@@ -162,10 +162,11 @@ async function loadInvitation() {
   setupBgm(isEnabled("bgm") ? config.media.bgm : "");
   setupActions(config);
   setupContacts(config.contact || {});
+  setupAccounts(config.accounts || {}, isEnabled("accounts"));
   setupDirections(config);
 }
 
-const DEFAULT_SECTION_ORDER = ["invitation", "photo", "details", "directions", "gallery", "profile", "parking"];
+const DEFAULT_SECTION_ORDER = ["invitation", "photo", "details", "directions", "gallery", "profile", "parking", "accounts"];
 const SECTION_ELEMENT_IDS = {
   invitation: "invitationSection",
   photo: "paperPhotoSection",
@@ -173,7 +174,8 @@ const SECTION_ELEMENT_IDS = {
   details: "details",
   directions: "directionsSection",
   parking: "parkingSection",
-  gallery: "gallerySection"
+  gallery: "gallerySection",
+  accounts: "accountsSection"
 };
 
 function applySectionOrder(savedOrder, template) {
@@ -236,6 +238,81 @@ function setupContacts(contact) {
     link.hidden = false;
   });
   actions.hidden = contacts.length === 0;
+}
+
+function safePaymentUrl(value) {
+  try {
+    const url = new URL(String(value || "").trim());
+    return url.protocol === "https:" ? url.href : "";
+  } catch {
+    return "";
+  }
+}
+
+async function copyText(value) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(value);
+    return;
+  }
+  const textarea = document.createElement("textarea");
+  textarea.value = value;
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  document.body.append(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  textarea.remove();
+}
+
+function setupAccounts(accounts, enabled) {
+  const section = document.getElementById("accountsSection");
+  if (!section || !enabled) return;
+
+  setOptionalText("accountsIntro", accounts.intro);
+  const sides = [
+    ["groom", "신랑측", accounts.groom || {}],
+    ["bride", "신부측", accounts.bride || {}]
+  ];
+  let visibleCount = 0;
+
+  sides.forEach(([prefix, label, account]) => {
+    const bank = String(account.bank || "").trim();
+    const number = String(account.number || "").trim();
+    const holder = String(account.holder || "").trim();
+    if (!bank || !number || !holder) return;
+
+    visibleCount += 1;
+    const group = document.getElementById(`${prefix}AccountGroup`);
+    if (!group) return;
+    group.hidden = false;
+    setText(`${prefix}AccountSummary`, holder);
+    setText(`${prefix}AccountHolder`, `${label} · 예금주 ${holder}`);
+    setText(`${prefix}AccountBank`, bank);
+    setText(`${prefix}AccountNumber`, number);
+
+    const copyButton = document.getElementById(`${prefix}AccountCopy`);
+    copyButton?.addEventListener("click", async () => {
+      const original = copyButton.textContent;
+      try {
+        await copyText(number.replace(/\s/g, ""));
+        copyButton.textContent = "복사되었습니다";
+      } catch {
+        copyButton.textContent = "복사하지 못했습니다";
+      }
+      window.setTimeout(() => { copyButton.textContent = original; }, 1600);
+    });
+
+    const paymentLink = document.getElementById(`${prefix}KakaoPay`);
+    const paymentUrl = safePaymentUrl(account.kakaoPayUrl);
+    if (paymentLink && paymentUrl) {
+      paymentLink.href = paymentUrl;
+      paymentLink.hidden = false;
+    } else {
+      copyButton?.parentElement?.classList.add("is-copy-only");
+    }
+  });
+
+  section.hidden = visibleCount === 0;
 }
 
 function waitForNaverMaps(timeoutMs = 8000) {
