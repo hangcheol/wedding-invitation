@@ -231,7 +231,9 @@ button { cursor: pointer; }
 .account-group summary::after { position: absolute; right: 6px; color: #918882; content: "+"; font-family: Arial, sans-serif; font-size: 18px; font-weight: 300; transition: transform .22s ease; }
 .account-group[open] summary::after { transform: rotate(45deg); }
 .account-group summary small { color: #817873; font-size: 11px; }
-.account-card { padding: 4px 4px 22px; }
+.account-group__body { padding: 0 4px 8px; }
+.account-card { padding: 17px 0 20px; border-top: 1px dotted rgba(145, 136, 130, .38); }
+.account-card:first-child { padding-top: 4px; border-top: 0; }
 .account-card p { margin: 0; }
 .account-card__holder { color: #756d68; font-size: 11px; }
 .account-card__number { margin-top: 4px !important; color: #383431; font-size: 14px; letter-spacing: .015em; }

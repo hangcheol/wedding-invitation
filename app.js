@@ -266,53 +266,82 @@ async function copyText(value) {
 
 function setupAccounts(accounts, enabled) {
   const section = document.getElementById("accountsSection");
-  if (!section || !enabled) return;
+  const list = document.getElementById("accountsList");
+  if (!section || !list || !enabled) return;
 
   setOptionalText("accountsIntro", accounts.intro);
   const sides = [
-    ["groom", "신랑측", accounts.groom || {}],
-    ["bride", "신부측", accounts.bride || {}]
+    ["신랑측", "신랑", accounts.groom],
+    ["신부측", "신부", accounts.bride]
   ];
-  let visibleCount = 0;
+  list.replaceChildren();
 
-  sides.forEach(([prefix, label, account]) => {
-    const bank = String(account.bank || "").trim();
-    const number = String(account.number || "").trim();
-    const holder = String(account.holder || "").trim();
-    if (!bank || !number || !holder) return;
+  sides.forEach(([sideLabel, defaultLabel, value]) => {
+    const source = Array.isArray(value) ? value : value && typeof value === "object" ? [value] : [];
+    const recipients = source.map((account) => ({
+      label: String(account.label || defaultLabel).trim(),
+      bank: String(account.bank || "").trim(),
+      number: String(account.number || "").trim(),
+      holder: String(account.holder || "").trim(),
+      kakaoPayUrl: safePaymentUrl(account.kakaoPayUrl)
+    })).filter((account) => account.bank && account.number && account.holder);
+    if (!recipients.length) return;
 
-    visibleCount += 1;
-    const group = document.getElementById(`${prefix}AccountGroup`);
-    if (!group) return;
-    group.hidden = false;
-    setText(`${prefix}AccountSummary`, holder);
-    setText(`${prefix}AccountHolder`, `${label} · 예금주 ${holder}`);
-    setText(`${prefix}AccountBank`, bank);
-    setText(`${prefix}AccountNumber`, number);
+    const group = document.createElement("details");
+    group.className = "account-group";
+    const summary = document.createElement("summary");
+    const title = document.createElement("span");
+    const count = document.createElement("small");
+    title.textContent = sideLabel;
+    count.textContent = `${recipients.length}명`;
+    summary.append(title, count);
 
-    const copyButton = document.getElementById(`${prefix}AccountCopy`);
-    copyButton?.addEventListener("click", async () => {
-      const original = copyButton.textContent;
-      try {
-        await copyText(number.replace(/\s/g, ""));
-        copyButton.textContent = "복사되었습니다";
-      } catch {
-        copyButton.textContent = "복사하지 못했습니다";
+    const body = document.createElement("div");
+    body.className = "account-group__body";
+    recipients.forEach((account) => {
+      const card = document.createElement("div");
+      card.className = "account-card";
+      const holder = document.createElement("p");
+      holder.className = "account-card__holder";
+      holder.textContent = `${account.label || defaultLabel} · 예금주 ${account.holder}`;
+      const number = document.createElement("p");
+      number.className = "account-card__number";
+      number.textContent = `${account.bank} ${account.number}`;
+
+      const actions = document.createElement("div");
+      actions.className = `account-card__actions${account.kakaoPayUrl ? "" : " is-copy-only"}`;
+      const copyButton = document.createElement("button");
+      copyButton.className = "account-copy";
+      copyButton.type = "button";
+      copyButton.textContent = "계좌번호 복사";
+      copyButton.addEventListener("click", async () => {
+        try {
+          await copyText(account.number.replace(/\s/g, ""));
+          copyButton.textContent = "복사되었습니다";
+        } catch {
+          copyButton.textContent = "복사하지 못했습니다";
+        }
+        window.setTimeout(() => { copyButton.textContent = "계좌번호 복사"; }, 1600);
+      });
+      actions.append(copyButton);
+
+      if (account.kakaoPayUrl) {
+        const paymentLink = document.createElement("a");
+        paymentLink.className = "account-kakaopay";
+        paymentLink.href = account.kakaoPayUrl;
+        paymentLink.target = "_blank";
+        paymentLink.rel = "noreferrer";
+        paymentLink.textContent = "카카오페이 송금";
+        actions.append(paymentLink);
       }
-      window.setTimeout(() => { copyButton.textContent = original; }, 1600);
+      card.append(holder, number, actions);
+      body.append(card);
     });
-
-    const paymentLink = document.getElementById(`${prefix}KakaoPay`);
-    const paymentUrl = safePaymentUrl(account.kakaoPayUrl);
-    if (paymentLink && paymentUrl) {
-      paymentLink.href = paymentUrl;
-      paymentLink.hidden = false;
-    } else {
-      copyButton?.parentElement?.classList.add("is-copy-only");
-    }
+    group.append(summary, body);
+    list.append(group);
   });
 
-  section.hidden = visibleCount === 0;
+  section.hidden = list.childElementCount === 0;
 }
 
 function waitForNaverMaps(timeoutMs = 8000) {

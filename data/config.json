@@ -37,10 +37,10 @@
     "togetherMessage": "서로 다른 속도지만, \n같은 곳을 향해\n걷고 있습니다."
   },
   "media": {
-    "heroPhoto": "assets/photos/hero-1280.webp",
+    "heroPhoto": "assets/photos/hero-1788063197591-----_0285.webp",
     "invitationPhoto": "",
-    "groomPhoto": "assets/photos/groom-1787884017375---_--.webp",
-    "bridePhoto": "assets/photos/bride-1787884017378---_--.webp",
+    "groomPhoto": "assets/photos/groom-1788063197594-1.webp",
+    "bridePhoto": "assets/photos/bride-1788063197595-2.webp",
     "venuePhoto": "",
     "parkingPhoto": "",
     "gallery": [
@@ -73,18 +73,31 @@
   },
   "accounts": {
     "intro": "멀리서도 축하의 마음을 전하고 싶으신 분들을 위해 계좌번호를 안내드립니다.",
-    "groom": {
-      "bank": "국민은행",
-      "number": "20390204159822",
-      "holder": "조항철",
-      "kakaoPayUrl": "https://qr.kakaopay.com/Ej79Nj6lS"
-    },
-    "bride": {
-      "bank": "",
-      "number": "",
-      "holder": "",
-      "kakaoPayUrl": ""
-    }
+    "groom": [
+      {
+        "label": "신랑",
+        "bank": "국민은행",
+        "number": "20390204159822",
+        "holder": "조항철",
+        "kakaoPayUrl": "https://qr.kakaopay.com/Ej79Nj6lS"
+      }
+    ],
+    "bride": [
+      {
+        "label": "신부",
+        "bank": "농협은행",
+        "number": "705105-52-057881",
+        "holder": "남명은",
+        "kakaoPayUrl": ""
+      },
+      {
+        "label": "신부 아버지",
+        "bank": "농협은행",
+        "number": "705105-52-057881",
+        "holder": "남성수",
+        "kakaoPayUrl": ""
+      }
+    ]
   },
   "design": {
     "template": "paper-story",
@@ -107,11 +120,11 @@
       "invitation",
       "photo",
       "profile",
+      "accounts",
+      "gallery",
       "details",
       "directions",
-      "parking",
-      "accounts",
-      "gallery"
+      "parking"
     ]
   }
 }
