@@ -242,6 +242,29 @@ button { cursor: pointer; }
 .account-card__actions.is-copy-only > * { grid-column: 1 / -1; }
 .account-card__actions .account-kakaopay { border-color: #f5df46; background: #fee500; color: #2d261f; }
 
+.guestbook { padding: 92px 30px 88px; background: var(--soft); text-align: center; }
+.guestbook__intro { max-width: 300px; margin: 0 auto 30px; color: #625c57; font-size: 13px; line-height: 1.9; word-break: keep-all; }
+.guestbook-form { position: relative; display: grid; max-width: 330px; gap: 13px; margin: 0 auto 38px; padding: 22px; border: 1px solid #ded6d0; background: rgba(255, 255, 255, .56); text-align: left; }
+.guestbook-form label { display: grid; gap: 6px; color: #716965; font-size: 11px; }
+.guestbook-form input, .guestbook-form textarea { width: 100%; border: 0; border-bottom: 1px solid #d8d0ca; border-radius: 0; padding: 8px 2px; outline: 0; background: transparent; color: #383431; font: inherit; font-size: 13px; }
+.guestbook-form textarea { min-height: 92px; resize: vertical; line-height: 1.7; }
+.guestbook-form input:focus, .guestbook-form textarea:focus { border-color: #8d756a; }
+.guestbook-form__website { position: absolute !important; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.guestbook-form__footer { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.guestbook-form__footer span { color: #99908a; font-size: 10px; }
+.guestbook-form__footer button, .guestbook-more { min-height: 40px; border: 1px solid #756a64; background: transparent; color: #4f4945; font: inherit; font-size: 11px; }
+.guestbook-form__footer button { padding: 8px 17px; }
+.guestbook-form__footer button:disabled { cursor: wait; opacity: .5; }
+.guestbook-status { min-height: 20px; margin: 0; color: #7c655b; font-size: 11px; line-height: 1.6; text-align: right; }
+.guestbook-list { max-width: 330px; margin: 0 auto; border-top: 1px solid #d8d0ca; text-align: left; }
+.guestbook-entry { padding: 19px 3px 20px; border-bottom: 1px solid #ded7d1; }
+.guestbook-entry div { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.guestbook-entry strong { color: #514b47; font-size: 12px; font-weight: 600; }
+.guestbook-entry time { color: #9a918b; font-size: 10px; }
+.guestbook-entry p { margin: 8px 0 0; color: #625b57; font-size: 12px; line-height: 1.75; white-space: pre-wrap; word-break: break-word; }
+.guestbook-empty { margin: 0; padding: 24px 0; border-bottom: 1px solid #ded7d1; color: #8a817c; font-size: 12px; text-align: center; }
+.guestbook-more { min-width: 150px; margin-top: 24px; padding: 8px 16px; }
+
 .ending { padding: 70px 0 100px; background: var(--paper); color: #6c6461; text-align: center; }
 .script-small { margin: 0 0 8px; font-family: var(--serif); font-size: 28px; font-style: italic; line-height: 1; }
 .ending p:last-child { margin: 0; font-family: var(--serif); font-size: 12px; letter-spacing: 0.08em; }
@@ -537,6 +560,11 @@ button { cursor: pointer; }
 [data-template="paper-story"] .accounts { background: var(--paper-canvas); }
 [data-template="paper-story"] .accounts__list,
 [data-template="paper-story"] .account-group { border-color: var(--paper-line); }
+[data-template="paper-story"] .guestbook { background: var(--paper-canvas); }
+[data-template="paper-story"] .guestbook-form { border-color: var(--paper-line); background: rgba(255,255,255,.34); }
+[data-template="paper-story"] .guestbook-list,
+[data-template="paper-story"] .guestbook-entry,
+[data-template="paper-story"] .guestbook-empty { border-color: var(--paper-line); }
 [data-template="paper-story"] .ending { position: relative; padding-block: 90px 112px; background: var(--paper-canvas); }
 [data-template="paper-story"] .ending::before { display: block; margin: 0 auto 25px; color: var(--paper-coral); content: "♪  ·  ♪"; font-size: 18px; letter-spacing: 0.35em; }
 [data-template="paper-story"] .script-small { color: var(--paper-ink); font-style: normal; }

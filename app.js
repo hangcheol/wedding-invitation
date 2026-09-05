@@ -164,9 +164,10 @@ async function loadInvitation() {
   setupContacts(config.contact || {});
   setupAccounts(config.accounts || {}, isEnabled("accounts"));
   setupDirections(config);
+  setupGuestbook(config.guestbook || {}, isEnabled("guestbook"));
 }
 
-const DEFAULT_SECTION_ORDER = ["invitation", "photo", "details", "directions", "gallery", "profile", "parking", "accounts"];
+const DEFAULT_SECTION_ORDER = ["invitation", "photo", "details", "directions", "gallery", "profile", "parking", "accounts", "guestbook"];
 const SECTION_ELEMENT_IDS = {
   invitation: "invitationSection",
   photo: "paperPhotoSection",
@@ -175,7 +176,8 @@ const SECTION_ELEMENT_IDS = {
   directions: "directionsSection",
   parking: "parkingSection",
   gallery: "gallerySection",
-  accounts: "accountsSection"
+  accounts: "accountsSection",
+  guestbook: "guestbookSection"
 };
 
 function applySectionOrder(savedOrder, template) {
@@ -442,8 +444,7 @@ function renderGallery(galleryPhotos, enabled) {
   if (!gallery || !gallerySection || !enabled || galleryPhotos.length === 0) return;
 
   gallerySection.hidden = false;
-  const renderPhotos = (photos) => {
-    gallery.replaceChildren(...photos.map((src, index) => {
+  const images = galleryPhotos.map((src, index) => {
       const image = document.createElement("img");
       image.className = "slide-item";
       image.src = src;
@@ -453,26 +454,128 @@ function renderGallery(galleryPhotos, enabled) {
       image.draggable = false;
       image.width = 360;
       image.height = 450;
+      if (index >= 8) image.hidden = true;
       return image;
-    }));
-  };
+    });
+  gallery.replaceChildren(...images);
 
   const moreButton = document.getElementById("galleryMoreButton");
   if (!moreButton || galleryPhotos.length <= 8) {
-    renderPhotos(galleryPhotos);
     return;
   }
 
   let expanded = false;
-  renderPhotos(galleryPhotos.slice(0, 8));
   moreButton.hidden = false;
   moreButton.textContent = `사진 더보기 (${galleryPhotos.length - 8})`;
   moreButton.addEventListener("click", () => {
+    const anchorTop = moreButton.getBoundingClientRect().top;
     expanded = !expanded;
-    renderPhotos(expanded ? galleryPhotos : galleryPhotos.slice(0, 8));
+    images.slice(8).forEach((image) => { image.hidden = !expanded; });
     moreButton.textContent = expanded ? "사진 접기" : `사진 더보기 (${galleryPhotos.length - 8})`;
     moreButton.setAttribute("aria-expanded", String(expanded));
+    if (!expanded) {
+      requestAnimationFrame(() => {
+        const scrollRoot = document.documentElement;
+        const previousBehavior = scrollRoot.style.scrollBehavior;
+        scrollRoot.style.scrollBehavior = "auto";
+        window.scrollBy(0, moreButton.getBoundingClientRect().top - anchorTop);
+        requestAnimationFrame(() => { scrollRoot.style.scrollBehavior = previousBehavior; });
+      });
+    }
   });
+}
+
+function setupGuestbook(settings, enabled) {
+  const section = document.getElementById("guestbookSection");
+  const form = document.getElementById("guestbookForm");
+  const list = document.getElementById("guestbookList");
+  const moreButton = document.getElementById("guestbookMoreButton");
+  if (!section || !form || !list || !moreButton || !enabled) return;
+
+  let apiUrl;
+  try {
+    apiUrl = new URL(settings.apiUrl || "https://admin.hamyeon.com/api/guestbook");
+    if (apiUrl.protocol !== "https:") throw new Error("Guestbook API must use HTTPS");
+  } catch {
+    return;
+  }
+  section.hidden = false;
+  setOptionalText("guestbookIntro", settings.intro || "두 사람의 앞날을 축복하는 따뜻한 마음을 남겨주세요.");
+  const status = document.getElementById("guestbookStatus");
+  const messageInput = document.getElementById("guestbookMessage");
+  const count = document.getElementById("guestbookCount");
+  let messages = [];
+  let visibleCount = 6;
+
+  const render = () => {
+    list.replaceChildren();
+    if (!messages.length) {
+      const empty = document.createElement("p");
+      empty.className = "guestbook-empty";
+      empty.textContent = "첫 번째 축하 메시지를 남겨주세요.";
+      list.append(empty);
+    } else {
+      messages.slice(0, visibleCount).forEach((entry) => {
+        const article = document.createElement("article");
+        article.className = "guestbook-entry";
+        const head = document.createElement("div");
+        const name = document.createElement("strong");
+        const date = document.createElement("time");
+        name.textContent = entry.name;
+        date.dateTime = entry.createdAt;
+        const parsedDate = new Date(entry.createdAt);
+        date.textContent = Number.isNaN(parsedDate.getTime()) ? "" : new Intl.DateTimeFormat("ko-KR", { month: "numeric", day: "numeric" }).format(parsedDate);
+        head.append(name, date);
+        const message = document.createElement("p");
+        message.textContent = entry.message;
+        article.append(head, message);
+        list.append(article);
+      });
+    }
+    moreButton.hidden = messages.length <= visibleCount;
+  };
+
+  const load = async () => {
+    try {
+      const response = await fetch(apiUrl, { cache: "no-store" });
+      if (!response.ok) throw new Error();
+      const result = await response.json();
+      messages = Array.isArray(result.messages) ? result.messages : [];
+      render();
+    } catch {
+      list.innerHTML = '<p class="guestbook-empty">방명록을 잠시 불러오지 못했습니다.</p>';
+    }
+  };
+
+  messageInput?.addEventListener("input", () => { count.textContent = `${messageInput.value.length} / 300`; });
+  moreButton.addEventListener("click", () => { visibleCount += 6; render(); });
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    status.textContent = "마음을 전하고 있습니다…";
+    try {
+      const data = new FormData(form);
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.fromEntries(data.entries()))
+      });
+      if (!response.ok) throw new Error(await response.text());
+      const result = await response.json();
+      messages.unshift(result.message);
+      form.reset();
+      count.textContent = "0 / 300";
+      status.textContent = "따뜻한 마음이 등록되었습니다.";
+      visibleCount = Math.max(visibleCount, 6);
+      render();
+    } catch (error) {
+      status.textContent = error.message || "등록하지 못했습니다. 잠시 후 다시 시도해 주세요.";
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+  load();
 }
 
 function setupBgm(src) {

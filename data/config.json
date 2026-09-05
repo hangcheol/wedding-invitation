@@ -113,6 +113,10 @@
       }
     ]
   },
+  "guestbook": {
+    "intro": "두 사람의 앞날을 축복하는 따뜻한 마음을 남겨주세요.",
+    "apiUrl": "https://admin.hamyeon.com/api/guestbook"
+  },
   "design": {
     "template": "paper-story",
     "introAnimation": true,
@@ -129,6 +133,7 @@
     "parking": true,
     "accounts": true,
     "gallery": true,
+    "guestbook": true,
     "bgm": true,
     "order": [
       "invitation",
@@ -138,7 +143,8 @@
       "details",
       "directions",
       "parking",
-      "accounts"
+      "accounts",
+      "guestbook"
     ]
   }
 }

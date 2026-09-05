@@ -31,7 +31,7 @@
     <style>
       :root, html, body { color-scheme: only light; background-color: #f5f1ec !important; }
     </style>
-    <link rel="stylesheet" href="styles.css?v=20260830-1">
+    <link rel="stylesheet" href="styles.css?v=20260905-1">
   </head>
   <body>
     <main class="phone">
@@ -202,6 +202,21 @@
         <button class="gallery__more" id="galleryMoreButton" type="button" aria-expanded="false" hidden>사진 더보기</button>
       </section>
 
+      <section class="section guestbook reveal" id="guestbookSection" hidden>
+        <p class="section-kicker slide-item">GUESTBOOK</p>
+        <p class="section-title slide-item">축하의 한마디</p>
+        <p class="guestbook__intro multiline-copy slide-item" id="guestbookIntro">두 사람의 앞날을 축복하는 따뜻한 마음을 남겨주세요.</p>
+        <form class="guestbook-form slide-item" id="guestbookForm">
+          <label>이름 <input id="guestbookName" name="name" maxlength="20" autocomplete="name" required></label>
+          <label>메시지 <textarea id="guestbookMessage" name="message" maxlength="300" rows="4" required></textarea></label>
+          <label class="guestbook-form__website" aria-hidden="true">웹사이트 <input name="website" tabindex="-1" autocomplete="off"></label>
+          <div class="guestbook-form__footer"><span id="guestbookCount">0 / 300</span><button type="submit">마음 남기기</button></div>
+          <p class="guestbook-status" id="guestbookStatus" role="status" aria-live="polite"></p>
+        </form>
+        <div class="guestbook-list slide-item" id="guestbookList" aria-live="polite"></div>
+        <button class="guestbook-more" id="guestbookMoreButton" type="button" hidden>방명록 더보기</button>
+      </section>
+
       <section class="ending reveal">
         <p class="script-small slide-item">thank you</p>
         <p class="slide-item"><span id="groomEnd">함께할 사람</span> &amp; <span id="brideEnd">곁에 있을 사람</span></p>
@@ -216,6 +231,6 @@
       <audio id="bgm" loop preload="none"></audio>
     </main>
 
-    <script src="app.js?v=20260830-1"></script>
+    <script src="app.js?v=20260905-1"></script>
   </body>
 </html>
