@@ -121,10 +121,10 @@
       "photo",
       "profile",
       "gallery",
-      "accounts",
       "details",
       "directions",
-      "parking"
+      "parking",
+      "accounts"
     ]
   }
 }
