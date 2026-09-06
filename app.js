@@ -165,6 +165,7 @@ async function loadInvitation() {
   setupAccounts(config.accounts || {}, isEnabled("accounts"));
   setupDirections(config);
   setupGuestbook(config.guestbook || {}, isEnabled("guestbook"));
+  setupAnalytics(config.analytics || {});
 }
 
 const DEFAULT_SECTION_ORDER = ["invitation", "photo", "details", "directions", "gallery", "profile", "parking", "accounts", "guestbook"];
@@ -618,6 +619,173 @@ function setupActions(config) {
       alert("청첩장 주소를 복사했습니다.");
     }
   });
+}
+
+function setupAnalytics(settings) {
+  if (settings.enabled === false || new URLSearchParams(window.location.search).has("previewTemplate")) return;
+
+  let apiUrl;
+  try {
+    apiUrl = new URL(settings.apiUrl || "https://admin.hamyeon.com/api/analytics/events");
+    if (apiUrl.protocol !== "https:") throw new Error("Analytics API must use HTTPS");
+  } catch {
+    return;
+  }
+
+  const randomId = () => window.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  const storedId = (storage, key) => {
+    try {
+      let value = storage.getItem(key);
+      if (!value) {
+        value = randomId();
+        storage.setItem(key, value);
+      }
+      return value;
+    } catch {
+      return randomId();
+    }
+  };
+  const visitorId = storedId(window.localStorage, "weddingVisitorId");
+  const sessionId = storedId(window.sessionStorage, "weddingSessionId");
+  const userAgent = navigator.userAgent;
+  const device = {
+    type: /iPad|Tablet/i.test(userAgent) || (/Macintosh/i.test(userAgent) && navigator.maxTouchPoints > 1)
+      ? "tablet"
+      : /Mobi|Android|iPhone|iPod/i.test(userAgent) ? "mobile" : "desktop",
+    os: /iPhone|iPad|iPod/i.test(userAgent) || (/Macintosh/i.test(userAgent) && navigator.maxTouchPoints > 1)
+      ? "iOS"
+      : /Android/i.test(userAgent) ? "Android" : /Windows/i.test(userAgent) ? "Windows" : /Mac OS/i.test(userAgent) ? "macOS" : "other",
+    browser: /SamsungBrowser/i.test(userAgent) ? "Samsung Internet"
+      : /EdgiOS|Edg/i.test(userAgent) ? "Edge"
+      : /CriOS|Chrome/i.test(userAgent) ? "Chrome"
+      : /FxiOS|Firefox/i.test(userAgent) ? "Firefox"
+      : /Safari/i.test(userAgent) ? "Safari" : "other",
+    language: navigator.language || "",
+    viewportWidth: window.innerWidth,
+    viewportHeight: window.innerHeight
+  };
+  const baseEvent = () => ({
+    visitorId,
+    sessionId,
+    path: window.location.pathname,
+    clientTimestamp: new Date().toISOString(),
+    device
+  });
+  let queue = [];
+  let flushing = false;
+
+  const enqueue = (event) => {
+    queue.push({ ...baseEvent(), ...event });
+    if (queue.length >= 8) flush();
+  };
+
+  const flush = async ({ beacon = false } = {}) => {
+    if (!queue.length || flushing) return;
+    const batch = queue.splice(0, 50);
+    const body = JSON.stringify({ events: batch });
+    if (beacon && navigator.sendBeacon?.(apiUrl, body)) return;
+    flushing = true;
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body,
+        keepalive: true
+      });
+      if (!response.ok) throw new Error("Analytics request failed");
+    } catch {
+      if (!beacon) queue.unshift(...batch);
+    } finally {
+      flushing = false;
+    }
+  };
+
+  enqueue({ type: "page_view", referrer: document.referrer });
+  flush();
+
+  const sectionLabels = {
+    coverSection: "첫 화면",
+    paperPhotoSection: "첫 사진",
+    invitationSection: "초대글",
+    profileSection: "신랑·신부 소개",
+    details: "예식 안내",
+    directionsSection: "오시는 길",
+    parkingSection: "주차 안내",
+    accountsSection: "마음 전하실 곳",
+    gallerySection: "갤러리",
+    guestbookSection: "방명록"
+  };
+  const ratios = new Map();
+  let activeSection = "";
+  let activeSince = performance.now();
+
+  const finishActiveSection = () => {
+    if (!activeSection) return;
+    const durationMs = Math.round(performance.now() - activeSince);
+    if (durationMs >= 250) enqueue({ type: "section_time", section: activeSection, durationMs });
+    activeSince = performance.now();
+  };
+
+  const updateActiveSection = () => {
+    const next = document.visibilityState === "visible"
+      ? [...ratios.entries()].sort((left, right) => right[1] - left[1]).find(([, ratio]) => ratio > 0)?.[0] || ""
+      : "";
+    if (next === activeSection) return;
+    finishActiveSection();
+    activeSection = next;
+    activeSince = performance.now();
+  };
+
+  if ("IntersectionObserver" in window) {
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => ratios.set(sectionLabels[entry.target.id], entry.isIntersecting ? entry.intersectionRatio : 0));
+      updateActiveSection();
+    }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
+    Object.keys(sectionLabels).forEach((id) => {
+      const section = document.getElementById(id);
+      if (section && !section.hidden) sectionObserver.observe(section);
+    });
+  }
+
+  const actionFor = (target) => {
+    const element = target.closest("button, a, summary");
+    if (!element) return null;
+    if (element.id === "galleryMoreButton") return [element.getAttribute("aria-expanded") === "true" ? "gallery_expand" : "gallery_collapse", element.textContent];
+    const byId = {
+      naverMapLink: ["map_naver", "네이버지도"],
+      kakaoMapLink: ["map_kakao", "카카오맵"],
+      copyAddressButton: ["address_copy", "주소 복사"],
+      groomContact: ["contact_groom", "신랑에게 연락"],
+      brideContact: ["contact_bride", "신부에게 연락"],
+      shareButton: ["share", "공유하기"],
+      topButton: ["scroll_top", "맨 위로"],
+      musicButton: ["bgm_toggle", "배경음악"],
+      guestbookMoreButton: ["guestbook_more", "방명록 더보기"]
+    };
+    if (byId[element.id]) return byId[element.id];
+    if (element.matches(".account-copy")) return ["account_copy", "계좌번호 복사"];
+    if (element.matches(".account-kakaopay")) return ["kakaopay", "카카오페이 송금"];
+    if (element.matches(".account-group > summary")) return ["account_group_toggle", element.textContent];
+    if (element.matches(".transport-guide summary")) return ["transport_toggle", element.textContent];
+    return null;
+  };
+
+  document.addEventListener("click", (event) => {
+    const action = actionFor(event.target);
+    if (action) enqueue({ type: "action", action: action[0], label: action[1] });
+  });
+  document.getElementById("guestbookForm")?.addEventListener("submit", () => {
+    enqueue({ type: "action", action: "guestbook_submit", label: "방명록 등록" });
+  });
+  document.addEventListener("visibilitychange", () => {
+    updateActiveSection();
+    if (document.visibilityState === "hidden") flush({ beacon: true });
+  });
+  window.addEventListener("pagehide", () => {
+    finishActiveSection();
+    flush({ beacon: true });
+  });
+  window.setInterval(() => flush(), 10_000);
 }
 
 function setupReveal() {

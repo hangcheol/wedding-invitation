@@ -117,6 +117,10 @@
     "intro": "두 사람의 앞날을 축복하는 따뜻한 마음을 남겨주세요.",
     "apiUrl": "https://admin.hamyeon.com/api/guestbook"
   },
+  "analytics": {
+    "enabled": true,
+    "apiUrl": "https://admin.hamyeon.com/api/analytics/events"
+  },
   "design": {
     "template": "paper-story",
     "introAnimation": true,
