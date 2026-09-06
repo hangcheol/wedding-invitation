@@ -137,7 +137,7 @@
     "parking": true,
     "accounts": true,
     "gallery": true,
-    "guestbook": true,
+    "guestbook": false,
     "bgm": true,
     "order": [
       "invitation",
