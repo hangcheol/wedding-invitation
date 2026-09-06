@@ -662,7 +662,17 @@ function setupAnalytics(settings) {
       : /Safari/i.test(userAgent) ? "Safari" : "other",
     language: navigator.language || "",
     viewportWidth: window.innerWidth,
-    viewportHeight: window.innerHeight
+    viewportHeight: window.innerHeight,
+    screenWidth: window.screen?.width || 0,
+    screenHeight: window.screen?.height || 0,
+    pixelRatio: window.devicePixelRatio || 1,
+    colorDepth: window.screen?.colorDepth || 0,
+    touchPoints: navigator.maxTouchPoints || 0,
+    cpuCores: navigator.hardwareConcurrency || 0,
+    memoryGb: navigator.deviceMemory || 0,
+    platform: navigator.userAgentData?.platform || navigator.platform || "",
+    browserVersion: navigator.userAgentData?.brands?.map((entry) => `${entry.brand} ${entry.version}`).join(", ") || "",
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || ""
   };
   const baseEvent = () => ({
     visitorId,
@@ -700,8 +710,23 @@ function setupAnalytics(settings) {
     }
   };
 
-  enqueue({ type: "page_view", referrer: document.referrer });
-  flush();
+  const sendPageView = async () => {
+    try {
+      const detail = await navigator.userAgentData?.getHighEntropyValues?.(["architecture", "bitness", "model", "platformVersion", "uaFullVersion"]);
+      if (detail) Object.assign(device, {
+        architecture: detail.architecture || "",
+        bitness: detail.bitness || "",
+        model: detail.model || "",
+        platformVersion: detail.platformVersion || "",
+        browserVersion: detail.uaFullVersion || device.browserVersion
+      });
+    } catch {
+      // Some browsers intentionally limit high-entropy device details.
+    }
+    enqueue({ type: "page_view", referrer: document.referrer });
+    flush();
+  };
+  sendPageView();
 
   const sectionLabels = {
     coverSection: "첫 화면",
