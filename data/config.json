@@ -107,7 +107,7 @@
       {
         "label": "신부 아버지",
         "bank": "농협은행",
-        "number": "705105-52-057881",
+        "number": "705105-56-019863",
         "holder": "남성수",
         "kakaoPayUrl": ""
       }
@@ -137,7 +137,7 @@
     "parking": true,
     "accounts": true,
     "gallery": true,
-    "guestbook": false,
+    "guestbook": true,
     "bgm": true,
     "order": [
       "invitation",
