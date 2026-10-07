@@ -134,7 +134,7 @@
     "profile": true,
     "details": true,
     "directions": true,
-    "parking": true,
+    "parking": false,
     "accounts": true,
     "gallery": true,
     "guestbook": true,
