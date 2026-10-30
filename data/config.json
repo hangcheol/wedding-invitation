@@ -17,6 +17,17 @@
     "closing": "소중한 걸음으로 축복해 주시면\n큰 기쁨으로 간직하겠습니다.",
     "coverQuote": "Forever begins with a single step,\nand love guides us every step of the way."
   },
+  "dayParking": {
+    "title": "예식 당일 주차·셔틀 안내",
+    "notice": "11월 8일 오후 2시 축구 경기로\n주변 도로와 주차장이 혼잡할 수 있습니다.\n자가용으로 오시는 하객께서는\n광교테크노밸리 주차장 이용을 권장드립니다.",
+    "address": "광교테크노밸리\n경기 수원시 영통구 광교로 105\n(이의동 906-5)",
+    "shuttleHours": "11월 8일 12:00~18:00\n현장 상황에 따라 변경될 수 있습니다.",
+    "shuttleRoute": "광교테크노밸리 정문 ↔ 경기장 P4 주차장\n주차 후 정문에서 셔틀버스에 탑승해 주세요.\n돌아가실 때는 P4 주차장에서 탑승해 주세요.",
+    "fees": "기본 1시간 무료 + 예식장 등록 1시간\n총 2시간 무료\n웨딩홀 인포데스크 직원에게\n추가 1시간 무료 주차 등록을 요청해 주세요.\n초과 시 10분당 300원",
+    "note": "원활한 이동을 위해 여유 있게 출발해 주세요.\n아래 안내는 광교테크노밸리 주차장 셔틀 기준입니다.",
+    "phone": "031-241-6000",
+    "videoUrl": "https://m.site.naver.com/1ZX4F"
+  },
   "parking": {
     "text": "예식장 주차장 이용이 가능합니다. 자세한 안내는 추후 업데이트됩니다."
   },
@@ -43,6 +54,7 @@
     "bridePhoto": "assets/photos/bride-1788063197595-2.webp",
     "venuePhoto": "",
     "parkingPhoto": "",
+    "dayParkingMap": "assets/maps/gwanggyo-shuttle-map.jpg",
     "gallery": [
       "assets/photos/gallery-1787883452241-----_0285.webp",
       "assets/photos/gallery-1787883452246-----_0413.webp",
@@ -135,6 +147,7 @@
     "details": true,
     "directions": true,
     "parking": false,
+    "dayParking": true,
     "accounts": true,
     "gallery": true,
     "guestbook": true,
@@ -146,6 +159,7 @@
       "gallery",
       "details",
       "directions",
+      "dayParking",
       "parking",
       "accounts",
       "guestbook"

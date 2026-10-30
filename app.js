@@ -155,6 +155,7 @@ async function loadInvitation() {
   setSectionVisibility("details", isEnabled("details"));
   setSectionVisibility("directionsSection", isEnabled("directions"));
   setSectionVisibility("parkingSection", isEnabled("parking"));
+  setupDayParking(config.dayParking, config.media.dayParkingMap, isEnabled("dayParking"));
   setSectionVisibility("paperPhotoSection", template === "paper-story" && Boolean(heroPhoto));
   applySectionOrder(config.sections?.order, template);
   renderCalendar(config.event.date);
@@ -168,7 +169,7 @@ async function loadInvitation() {
   setupAnalytics(config.analytics || {});
 }
 
-const DEFAULT_SECTION_ORDER = ["invitation", "photo", "details", "directions", "gallery", "profile", "parking", "accounts", "guestbook"];
+const DEFAULT_SECTION_ORDER = ["invitation", "photo", "details", "directions", "dayParking", "gallery", "profile", "parking", "accounts", "guestbook"];
 const SECTION_ELEMENT_IDS = {
   invitation: "invitationSection",
   photo: "paperPhotoSection",
@@ -176,6 +177,7 @@ const SECTION_ELEMENT_IDS = {
   details: "details",
   directions: "directionsSection",
   parking: "parkingSection",
+  dayParking: "dayParkingSection",
   gallery: "gallerySection",
   accounts: "accountsSection",
   guestbook: "guestbookSection"
@@ -191,6 +193,36 @@ function applySectionOrder(savedOrder, template) {
   });
   document.querySelector(".ending")?.style.setProperty("order", String(order.length + 2));
   if (template !== "paper-story") document.getElementById("paperPhotoSection")?.style.removeProperty("order");
+}
+
+function setupDayParking(info = {}, mapSrc = "", enabled) {
+  setSectionVisibility("dayParkingSection", enabled && Boolean(info.notice?.trim()));
+  setText("dayParkingTitle", info.title || "예식 당일 주차·셔틀 안내");
+  for (const field of ["notice", "address", "shuttleHours", "shuttleRoute", "fees", "note"]) {
+    const el = document.getElementById(`dayParking${field[0].toUpperCase()}${field.slice(1)}`);
+    el.textContent = info[field] || "";
+    (el.closest(".day-parking__row") || el).hidden = !info[field]?.trim();
+  }
+  const video = document.getElementById("dayParkingVideo");
+  let videoUrl = "";
+  try {
+    const url = new URL(info.videoUrl);
+    if (url.protocol === "https:") videoUrl = url.href;
+  } catch { /* Optional link. */ }
+  video.hidden = !videoUrl;
+  if (videoUrl) video.href = videoUrl;
+  const phone = document.getElementById("dayParkingPhone");
+  const digits = String(info.phone || "").replace(/[^0-9+]/g, "");
+  phone.hidden = !digits;
+  phone.textContent = `WI컨벤션 문의 ${info.phone || ""}`;
+  if (digits) phone.href = `tel:${digits}`;
+  const map = document.getElementById("dayParkingMap");
+  const validMap = /^assets\/[\w./-]+$/.test(mapSrc) && !mapSrc.includes("..");
+  document.getElementById("dayParkingMapDetails").hidden = !validMap;
+  if (validMap) {
+    map.src = mapSrc;
+    document.getElementById("dayParkingMapLink").href = mapSrc;
+  }
 }
 
 function setupDirections(config) {
@@ -736,6 +768,7 @@ function setupAnalytics(settings) {
     details: "예식 안내",
     directionsSection: "오시는 길",
     parkingSection: "주차 안내",
+    dayParkingSection: "당일 주차·셔틀 안내",
     accountsSection: "마음 전하실 곳",
     gallerySection: "갤러리",
     guestbookSection: "방명록"

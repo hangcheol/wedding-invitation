@@ -31,7 +31,7 @@
     <style>
       :root, html, body { color-scheme: only light; background-color: #f5f1ec !important; }
     </style>
-    <link rel="stylesheet" href="styles.css?v=20260905-1">
+    <link rel="stylesheet" href="styles.css?v=20261030-parking">
   </head>
   <body>
     <main class="phone">
@@ -189,6 +189,28 @@
         <p class="parking-text multiline-copy slide-item" id="parkingText">예식장 주차장 이용이 가능합니다. 자세한 안내는 추후 업데이트됩니다.</p>
       </section>
 
+      <section class="section day-parking reveal" id="dayParkingSection" hidden>
+        <p class="section-kicker slide-item">PARKING &amp; SHUTTLE</p>
+        <h2 class="section-title slide-item" id="dayParkingTitle">예식 당일 주차·셔틀 안내</h2>
+        <p class="day-parking__notice multiline-copy slide-item" id="dayParkingNotice"></p>
+        <dl class="day-parking__info slide-item">
+          <div class="day-parking__row"><dt>주차장</dt><dd class="multiline-copy" id="dayParkingAddress"></dd></div>
+          <div class="day-parking__row"><dt>셔틀 운행</dt><dd class="multiline-copy" id="dayParkingShuttleHours"></dd></div>
+          <div class="day-parking__row"><dt>탑승 위치</dt><dd class="multiline-copy" id="dayParkingShuttleRoute"></dd></div>
+          <div class="day-parking__row"><dt>주차 요금</dt><dd class="multiline-copy" id="dayParkingFees"></dd></div>
+        </dl>
+        <p class="day-parking__note multiline-copy slide-item" id="dayParkingNote"></p>
+        <a class="route-button slide-item" id="dayParkingVideo" target="_blank" rel="noreferrer" hidden>주차장 이동 안내 보기 ↗</a>
+        <details class="day-parking__map slide-item" id="dayParkingMapDetails" hidden>
+          <summary>주차장·셔틀 약도 펼쳐보기</summary>
+          <a id="dayParkingMapLink" target="_blank" rel="noreferrer" aria-label="주차장·셔틀 약도 원본 크게 보기">
+            <img id="dayParkingMap" alt="광교테크노밸리 주차장과 경기장 P4 셔틀 탑승 위치 약도" loading="lazy" decoding="async" width="1280" height="1186">
+          </a>
+          <p>약도를 누르면 크게 볼 수 있습니다.</p>
+        </details>
+        <a class="day-parking__phone slide-item" id="dayParkingPhone" hidden></a>
+      </section>
+
       <section class="section accounts reveal" id="accountsSection" hidden>
         <p class="section-kicker slide-item">WITH GRATITUDE</p>
         <p class="section-title slide-item">마음 전하실 곳</p>
@@ -231,6 +253,6 @@
       <audio id="bgm" loop preload="none"></audio>
     </main>
 
-    <script src="app.js?v=20260906-2"></script>
+    <script src="app.js?v=20261030-parking"></script>
   </body>
 </html>
