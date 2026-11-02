@@ -31,7 +31,7 @@
     <style>
       :root, html, body { color-scheme: only light; background-color: #f5f1ec !important; }
     </style>
-    <link rel="stylesheet" href="styles.css?v=20261030-parking">
+    <link rel="stylesheet" href="styles.css?v=20261102-notice-3">
   </head>
   <body>
     <main class="phone">
@@ -58,6 +58,14 @@
             <p class="quote" id="coverQuote">Forever begins with a single step,<br>and love guides us every step of the way.</p>
           </div>
         </div>
+      </section>
+
+      <section class="section visit-notice" id="visitNoticeSection" hidden aria-labelledby="visitNoticeTitle">
+        <p class="section-kicker">GUEST INFORMATION</p>
+        <h2 id="visitNoticeTitle">사전에 확인해 주세요</h2>
+        <p class="visit-notice__intro multiline-copy" id="visitNoticeIntro"></p>
+        <div class="visit-notice__items" id="visitNoticeSummary"></div>
+        <button class="route-button" type="button" id="visitNoticeOpen" aria-haspopup="dialog">방문 안내 자세히 보기</button>
       </section>
 
       <section class="section paper-photo-story reveal" id="paperPhotoSection">
@@ -248,11 +256,28 @@
         <button id="topButton" type="button" aria-label="맨 위로">↑</button>
         <button id="shareButton" type="button" aria-label="공유하기">↗</button>
       </nav>
+      <button class="visit-notice-reopen" type="button" id="visitNoticeReopen" aria-haspopup="dialog" hidden>방문 안내</button>
 
       <button class="music" id="musicButton" type="button" hidden aria-label="배경음악 재생">♪</button>
       <audio id="bgm" loop preload="none"></audio>
     </main>
 
-    <script src="app.js?v=20261030-parking"></script>
+    <dialog class="visit-notice-dialog" id="visitNoticeDialog" aria-labelledby="visitNoticeDialogTitle">
+      <button class="visit-notice-dialog__close" type="button" id="visitNoticeClose" aria-label="방문 안내 닫기" autofocus>×</button>
+      <div class="visit-notice-dialog__content">
+      <p class="section-kicker">GUEST INFORMATION</p>
+      <h2 id="visitNoticeDialogTitle">사전에 확인해 주세요</h2>
+      <p class="visit-notice__intro multiline-copy" id="visitNoticeDialogIntro"></p>
+      <div class="visit-notice__items" id="visitNoticeDetails"></div>
+      <details class="visit-notice__parking" id="visitNoticeParking" hidden>
+        <summary>주차 요금·셔틀·약도 자세히 보기</summary>
+        <div id="visitNoticeParkingContent"></div>
+      </details>
+      <p class="visit-notice__closing multiline-copy" id="visitNoticeClosing"></p>
+      <button class="route-button" type="button" id="visitNoticeDone">확인했어요</button>
+      </div>
+    </dialog>
+    <script src="visit-notice.js?v=20261102-2"></script>
+    <script src="app.js?v=20261102-notice"></script>
   </body>
 </html>

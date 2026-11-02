@@ -17,6 +17,29 @@
     "closing": "소중한 걸음으로 축복해 주시면\n큰 기쁨으로 간직하겠습니다.",
     "coverQuote": "Forever begins with a single step,\nand love guides us every step of the way."
   },
+  "visitNotice": {
+    "enabled": true,
+    "autoOpen": true,
+    "title": "사전에 확인해 주세요",
+    "intro": "마음 편히 함께하실 수 있도록\n방문 시간을 안내드립니다 🤍",
+    "closing": "소중한 걸음에 진심으로 감사드립니다.",
+    "items": [
+      {
+        "enabled": true,
+        "parkingDetails": false,
+        "title": "신부대기실 안내",
+        "time": "오후 12시 ~ 오후 12시 50분",
+        "body": "신부와 인사와 사진 촬영을 원하시는 분들은\n위 시간에 신부대기실로 방문해 주세요."
+      },
+      {
+        "enabled": true,
+        "parkingDetails": false,
+        "title": "연회장 이용 안내",
+        "time": "오후 12시 30분 ~ 오후 2시 30분",
+        "body": "연회장 운영 시간을 참고하시어\n여유롭게 식사를 즐겨 주세요."
+      }
+    ]
+  },
   "dayParking": {
     "title": "예식 당일 주차·셔틀 안내",
     "notice": "11월 8일 오후 2시 축구 경기로\n주변 도로와 주차장이 혼잡할 수 있습니다.\n자가용으로 오시는 하객께서는\n광교테크노밸리 주차장 이용을 권장드립니다.",

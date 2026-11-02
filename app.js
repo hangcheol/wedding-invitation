@@ -156,6 +156,7 @@ async function loadInvitation() {
   setSectionVisibility("directionsSection", isEnabled("directions"));
   setSectionVisibility("parkingSection", isEnabled("parking"));
   setupDayParking(config.dayParking, config.media.dayParkingMap, isEnabled("dayParking"));
+  setupVisitNotice(config.visitNotice);
   setSectionVisibility("paperPhotoSection", template === "paper-story" && Boolean(heroPhoto));
   applySectionOrder(config.sections?.order, template);
   renderCalendar(config.event.date);
@@ -189,9 +190,9 @@ function applySectionOrder(savedOrder, template) {
   document.getElementById("coverSection")?.style.setProperty("order", "1");
   order.forEach((key, index) => {
     const element = document.getElementById(SECTION_ELEMENT_IDS[key]);
-    if (element) element.style.setProperty("order", String(index + 2), "important");
+    if (element) element.style.setProperty("order", String(index + 3), "important");
   });
-  document.querySelector(".ending")?.style.setProperty("order", String(order.length + 2));
+  document.querySelector(".ending")?.style.setProperty("order", String(order.length + 3));
   if (template !== "paper-story") document.getElementById("paperPhotoSection")?.style.removeProperty("order");
 }
 
@@ -762,6 +763,7 @@ function setupAnalytics(settings) {
 
   const sectionLabels = {
     coverSection: "첫 화면",
+    visitNoticeSection: "방문 안내 공지",
     paperPhotoSection: "첫 사진",
     invitationSection: "초대글",
     profileSection: "신랑·신부 소개",
